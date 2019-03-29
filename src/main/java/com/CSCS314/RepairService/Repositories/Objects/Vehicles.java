@@ -11,12 +11,14 @@ import java.sql.Date;
 public class Vehicles {
     //Initialise Variables
     //TODO add Location
+    @Id
     int VehicleId;
     String NumberPlate;
     String MakeModel;
     int Year;
 
     //Getters
+
     public int getVehicleId() {
         return VehicleId;
     }
