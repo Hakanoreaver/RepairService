@@ -6,6 +6,7 @@ DROP TABLE Transactions;
 DROP TABLE Requests;
 DROP TABLE Customers;
 DROP TABLE Professional;
+DROP TABLE Admin;
 
 CREATE TABLE Customers (
 CustomerId int(10) NOT NULL,
@@ -88,4 +89,10 @@ PRIMARY KEY (Id)
 
 CREATE TABLE Balance (
 Money DECIMAL(9,2)
+);
+
+CREATE TABLE Admin (
+	AdminId int(10),
+	PasswordToken varchar(20),
+	PRIMARY KEY (AdminId)
 );

@@ -3,7 +3,6 @@ package com.CSCS314.RepairService.Repositories.Objects;
 //import org.springframework.web.bind.annotations.CrossOrigins;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Date;
 
 @Entity
 public class Professionals {
@@ -11,83 +10,83 @@ public class Professionals {
 
     //TODO Add the Location once format is decided
     @Id
-    private int ProfessionalId;
-    private int AvRating;
-    private String Name;
-    private String BankToken;
-    private String Services;
-    private String Email;
-    private String MobileNumber;
-    private String PasswordToken;
+    private int professionalId;
+    private int avRating;
+    private String name;
+    private String bankToken;
+    private String services;
+    private String email;
+    private String mobileNumber;
+    private String passwordToken;
     private String ABN;
-    private String CertificationNumber;
-    private Double PriceVariance;
+    private String certificationNumber;
+    private Double priceVariance;
 
     //Getters
     public int getProfessionalId() {
-        return ProfessionalId;
+        return professionalId;
     }
-    public int getAvRating() {return AvRating;}
+    public int getAvRating() {return avRating;}
     public String getName() {
-        return Name;
+        return name;
     }
     public String getBankToken() {
-        return BankToken;
+        return bankToken;
     }
     public String getServices() {
-        return Services;
+        return services;
     }
     public String getEmail() {
-        return Email;
+        return email;
     }
     public String getMobileNumber() {
-        return MobileNumber;
+        return mobileNumber;
     }
     public String getPasswordToken() {
-        return PasswordToken;
+        return passwordToken;
     }
     public String getABN() {
         return ABN;
     }
     public String getCertificationNumber() {
-        return CertificationNumber;
+        return certificationNumber;
     }
     public Double getPriceVariance() {
-        return PriceVariance;
+        return priceVariance;
     }
 
     //Setters
     public void setProfessionalId(int CustomerId) {
-        this.ProfessionalId = CustomerId;
+        this.professionalId = CustomerId;
     }
     public void setAvRating(int AvRating) {
-        this.AvRating = AvRating;
+        this.avRating = AvRating;
     }
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
     public void setBankToken(String CardAuthToken) {
-        this.BankToken = CardAuthToken;
+        this.bankToken = CardAuthToken;
     }
     public void setServices(String Vehicles) {
-        this.Services = Vehicles;
+        this.services = Vehicles;
     }
     public void setEmail(String Email) {
-        this.Email = Email;
+        this.email = Email;
     }
     public void setMobileNumber(String MobileNumber) {
-        this.MobileNumber = MobileNumber;
+        this.mobileNumber = MobileNumber;
     }
     public void setPasswordToken(String PasswordToken) {
-        this.PasswordToken = PasswordToken;
+        this.passwordToken = PasswordToken;
     }
     public void setABN(String ABN) {
         this.ABN = ABN;
     }
     public void setCertificationNumber(String CertificationNumber) {
-        this.CertificationNumber = CertificationNumber;
+        this.certificationNumber = CertificationNumber;
     }
     public void setPriceVariance(Double PriceVariance) {
-        this.PriceVariance = PriceVariance;
+        this.priceVariance = PriceVariance;
     }
 }

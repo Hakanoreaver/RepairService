@@ -9,7 +9,7 @@ package com.CSCS314.RepairService.Repositories;
 @Repository
 public interface CustomersRepository extends CrudRepository<Customers, Integer> {
         @Query("SELECT c FROM Customers c WHERE c.Email = :Email")
-        public Customers findByUsername(@Param("Email") String Email);
+        public Customers findByEmail(@Param("Email") String Email);
 
         @Query("SELECT c FROM Customers c WHERE c.customerId = :customerId")
         public Customers findById(@Param("customerId") int customerId);

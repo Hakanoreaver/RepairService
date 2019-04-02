@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Repair Service</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		function logInUser() {
+			var u = document.getElementById("username").value;
+			var p = document.getElementById("password").value;
+			var ajax = new XMLHttpRequest();
+			ajax.open('POST', 'http://localhost:9090/main/user/logIn/' + u + '/' + p,false);
+			ajax.send();
+			alert(ajax.responseText);
+		}
+
+		function logIn() {
+			alert(radioValue);
+			if(radioValue == "c") {
+				logInUser();
+			}
+			else if(radioValue == "p") {
+				logInProfessional();
+			}
+			else if(radioValue == "a") {
+				logInAdmin();
+			}
+		}
+
+		function logInProfessional() {
+			var u = document.getElementById("username").value;
+			var p = document.getElementById("password").value;
+			var ajax = new XMLHttpRequest();
+			ajax.open('POST', 'http://localhost:9090/main/professional/logIn/' + u + '/' + p,false);
+			ajax.send();
+			alert(ajax.responseText);
+		}
+
+		function logInAdmin() {
+			var u = document.getElementById("username").value;
+			var p = document.getElementById("password").value;
+			var ajax = new XMLHttpRequest();
+			ajax.open('POST', 'http://localhost:9090/main/admin/logIn/' + u + '/' + p,false);
+			ajax.send();
+			alert(ajax.responseText);
+		
+		}
+	</script>
+</head>
+<body>
+	<div id="header" class="row" align="centre" style="height: 100px"> 
+	</div>
+</div>
+<div id="header" class="row" align="centre" style="height: 100px"> 
+	<div id="header" class="col-sm" align="middle">
+		<h1> Log In </h1>
+	</div>
+</div>
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4 p-4" align="center">
+		<input id="username" ng-model="username" placeholder="Username">  </input>
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4 p-4" align="center">
+		<input id="password" ng-model="username" placeholder="Password">  </input>
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4 p-4" align="center">
+		<input type="radio" name="custType" value="c" checked> Customer
+		<input type="radio" name="custType" value="p"> Professional
+		<input type="radio" name="custType" value="a"> Admin
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4 p-4" align="center">
+		<button onclick="logIn()">Log In</button>
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+</body>
+</html>

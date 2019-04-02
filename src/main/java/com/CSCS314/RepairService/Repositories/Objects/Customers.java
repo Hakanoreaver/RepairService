@@ -9,7 +9,7 @@ import java.sql.Date;
 public class Customers {
 	//Initialise Variables
 	@Id
-	private int CustomerId;
+	private int customerId;
 	private boolean CustomerType;
 	private String Name;
 	private String CardAuthToken;
@@ -21,7 +21,7 @@ public class Customers {
 
 	//Getters
 	public int getCustomerId() {
-		return CustomerId;
+		return customerId;
 	}
 	public boolean getCustomerType() {
 		return CustomerType;
@@ -50,7 +50,7 @@ public class Customers {
 
 	//Setters
 	public void setCustomerId(int CustomerId) {
-		this.CustomerId = CustomerId;
+		this.customerId = CustomerId;
 	}
 	public void setCustomerType(boolean CustomerType) {
 		this.CustomerType = CustomerType;
