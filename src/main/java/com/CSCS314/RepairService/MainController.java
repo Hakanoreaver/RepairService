@@ -140,7 +140,7 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "professional/create")
+    @PostMapping(path = "user/create")
     public @ResponseBody
     void createCustomer(String name, String cardAuthToken, String vehicles, String email, String mobileNumber, String passwordToken) {
         Customers c = new Customers();

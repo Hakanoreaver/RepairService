@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		function create() {
+			var username = document.getElementById("username").value;
+			var password = document.getElementById("password").value;
+
+			var number = document.getElementById("number").value;
+			var date = document.getElementById("date").value;
+			var cvv = document.getElementById("cvv").value;
+
+			var email = document.getElementById("email").value;
+			var mobile = document.getElementById("mobile").value;
+
+			alert(date);
+		}
+	</script>
+</head>
+<body>
+	</div>
+	<div id="header" class="row" align="middle" style="height: 100px">
+	</div>
+</div>
+<div id="header" class="row" align="centre" style="height: 100px"> 
+	<div id="header" class="col-sm" align="middle">
+		<h1> Create User </h1>
+	</div>
+</div>
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4" align="center">
+		<p class="lead">Username</p>
+		<input id="username" ng-model="username" placeholder="Username">  </input>
+		<br />
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">Password</p>
+		<input id="password" ng-model="username" placeholder="Password" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">Card Number</p>
+		<input id="number" ng-model="username" placeholder="Card Number" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">Expiry Date</p>
+		<input id="date" type="date" placeholder="Expiry Date" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">CVV</p>
+		<input id="cvv" ng-model="username" placeholder="CVV" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">Email</p>
+		<input id="email" ng-model="username" placeholder="Email" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6" align="center">
+		<p class="lead">Mobile</p>
+		<input id="mobile" ng-model="username" placeholder="Mobile" style="display: inline">  </input>
+		<br />
+	</div>
+	<div class="col-sm-3"></div>
+</div>
+
+<div id="header" class="row" align="middle"> 
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4 p-4" align="center">
+		<button onclick="create()">Create User</button>
+	</div>
+	<div class="col-sm-4"></div>
+</div>
+</body>
+</html>
