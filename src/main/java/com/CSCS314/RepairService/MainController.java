@@ -26,6 +26,12 @@ public class MainController {
     private StandbyRepository standbyRepository;
     @Autowired
     private VehicleRepository vehicleRepository;
+    @Autowired
+    private ServiceRepository serviceRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private BalanceRepository balanceRepository;
 
     /**
      * This is the test to see if the backend is live.
@@ -296,14 +302,46 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "customer/all")
+    @GetMapping(path = "professionals/all")
     public @ResponseBody
     Iterable<Professionals> getProfessionals() {
         return professionalRepository.findAll();
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "vehicles/all")
+    public @ResponseBody
+    Iterable<Vehicles> getVehicles() {
+        return vehicleRepository.findAll();
+    }
 
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "services/all")
+    public @ResponseBody
+    Iterable<Services> getServices() {
+        return serviceRepository.findAll();
+    }
 
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "requests/all")
+    public @ResponseBody
+    Iterable<Requests> getRequests() {
+        return requestRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "transactions/all")
+    public @ResponseBody
+    Iterable<Transactions> getTransactions() {
+        return transactionRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "balance")
+    public @ResponseBody
+    double getBalance() {
+        return balanceRepository.getBalance();
+    }
 
 
     /**
