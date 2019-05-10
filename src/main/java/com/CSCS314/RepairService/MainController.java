@@ -152,7 +152,11 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "professional/create")
     public @ResponseBody
-    void createProfessional(String email, String name, String bankToken, String mobileNumber, String passwordToken, String ABN, String certificationNumber, double priceVariance) {
+    boolean createProfessional(String email, String name, String bankToken, String mobileNumber, String passwordToken, String ABN, String certificationNumber, double priceVariance) {
+        Professionals check = professionalRepository.findByEmail(email);
+        if(check == null) {
+            return false;
+        }
         Professionals p = new Professionals();
         p.setABN(ABN);
         p.setBankToken(bankToken);
@@ -163,12 +167,17 @@ public class MainController {
         p.setCertificationNumber(certificationNumber);
         p.setPriceVariance(priceVariance);
         professionalRepository.save(p);
+        return true;
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "user/create")
     public @ResponseBody
     boolean createCustomer(String name, String cardAuthToken, String email, String mobileNumber, String passwordToken) {
+        Customers check = customerRepository.findByEmail(email);
+        if(check == null) {
+            return false;
+        }
         Customers c = new Customers();
         c.setName(name);
         c.setCardAuthToken(cardAuthToken);
