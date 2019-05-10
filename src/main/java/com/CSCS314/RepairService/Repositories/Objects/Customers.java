@@ -1,14 +1,15 @@
 package com.CSCS314.RepairService.Repositories.Objects;
 
 //import org.springframework.web.bind.annotations.CrossOrigins;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 public class Customers {
 	//Initialise Variables
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "customerId", updatable = false, nullable = false)
 	private int customerId;
 	private boolean CustomerType;
 	private String Name;
@@ -18,6 +19,9 @@ public class Customers {
 	private String Email;
 	private String MobileNumber;
 	private String PasswordToken;
+	private Double longitude;
+	private Double latitude;
+
 
 	//Getters
 	public int getCustomerId() {
@@ -48,6 +52,18 @@ public class Customers {
 		return PasswordToken;
 	}
 
+	public boolean isCustomerType() {
+		return CustomerType;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
 	//Setters
 	public void setCustomerId(int CustomerId) {
 		this.customerId = CustomerId;
@@ -75,5 +91,13 @@ public class Customers {
 	}
 	public void setPasswordToken(String PasswordToken) {
 		this.PasswordToken = PasswordToken;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 }

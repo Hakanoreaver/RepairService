@@ -20,6 +20,10 @@
 			var ajax = new XMLHttpRequest();
 			ajax.open('POST', 'http://localhost:9090/main/user/logIn/' + u + '/' + p,false);
 			ajax.send();
+			if(ajax.responseText == 'Username or Password not found') {
+				alert(ajax.responseText)
+				return;
+			}
 			ajax.open('GET', 'http://localhost:9090/main/user/find/' + ajax.responseText,false);
 			ajax.send();
 			var json = JSON.parse(ajax.responseText);
@@ -38,7 +42,6 @@
 				radioValue = radioButtons[i].value;
 			}
 		}
-			alert(radioValue);
 			if(radioValue == "c") {
 				logInUser();
 			}
@@ -56,6 +59,10 @@
 			var ajax = new XMLHttpRequest();
 			ajax.open('POST', 'http://localhost:9090/main/professional/logIn/' + u + '/' + p,false);
 			ajax.send();
+			if(ajax.responseText == 'Username or Password not found') {
+				alert(ajax.responseText)
+				return;
+			}
 			ajax.open('GET', 'http://localhost:9090/main/professional/find/' + ajax.responseText,false);
 			ajax.send();
 			var json = JSON.parse(ajax.responseText);
@@ -71,6 +78,10 @@
 			var ajax = new XMLHttpRequest();
 			ajax.open('POST', 'http://localhost:9090/main/admin/logIn/' + u + '/' + p,false);
 			ajax.send();
+			if(ajax.responseText == 'Username or Password not found') {
+				alert(ajax.responseText)
+				return;
+			}
 			ajax.open('GET', 'http://localhost:9090/main/admin/find/' + ajax.responseText,false);
 			ajax.send();
 			var json = JSON.parse(ajax.responseText);
@@ -101,7 +112,7 @@
 <div id="header" class="row" align="middle"> 
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4 p-4" align="center">
-		<input id="username" ng-model="username" placeholder="Username">  </input>
+		<input id="username" ng-model="username" placeholder="Username"></input>
 	</div>
 	<div class="col-sm-4"></div>
 </div>
@@ -109,7 +120,7 @@
 <div id="header" class="row" align="middle"> 
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4 p-4" align="center">
-		<input id="password" ng-model="username" placeholder="Password">  </input>
+		<input id="password" ng-model="password" placeholder="Password" type="password"></input>
 	</div>
 	<div class="col-sm-4"></div>
 </div>

@@ -132,8 +132,30 @@
 
 	function loadWindow() {
 		document.getElementById("usernameField").innerHTML = localStorage.getItem("name");
+		var ajax = new XMLHttpRequest();
+		ajax.open('GET', 'http://localhost:9090/main/vehicles/' + localStorage.getItem("id"),false);
+		ajax.send();
+		var json = JSON.parse(ajax.responseText);
+		var selector = document.getElementById("cars");
+		for(var i = 0; i < json.length; i++) {
+			var input = document.createElement("option");
+			input.value = json[i].vehicleId;
+			input.innerHTML = json[i].numberPlate + " - " + json[i].makeModel + " - " + json[i].year;
+			selector.appendChild(input);
+		}
+
 	}
-	window.onload = loadWindow;
+
+	function addVehicle() {
+		var number = document.getElementById("number").value;
+		var model = document.getElementById("model").value;
+		var year = document.getElementById("year").value;
+		var ajax = new XMLHttpRequest();
+		ajax.open('POST', 'http://localhost:9090/main/addVehicle/' + localStorage.getItem("id") + '/' + number + '/' + model  + '/' + year,false);
+		ajax.send();
+		alert(ajax.responseText);
+		location.reload();
+a	}
 </script>
 
 <script type="text/javascript">
@@ -149,10 +171,6 @@
 
 	}
 
-	function addVehicle() {
-
-	}
-
 	function editAccount() {
 
 	}
@@ -163,7 +181,7 @@
 </script>
 </head>
 
-<body>
+<body onload="loadWindow()">
 	<div id="header" class="row" style="background-color: #4286f4"> 
 		<div id="header" class="col-sm-6">
 			<h3 id="usernameField" align="left" style="display: inline">Username</h3>
@@ -188,6 +206,13 @@
 				<option value="8">Steering Wheel Shaking</option>
 				<option value="9">Engine Smoking</option>
 				<option value="10">Stopping and Starting</option>
+			</select>
+			<br>
+			<br>
+			<br>
+			Select Vehicle
+			<select name="firstColumn" id="cars">
+				
 			</select>
 			<div style="height: 80px"></div>
 			<button class="myButton" name="firstColumn">Place Request</button>
@@ -241,7 +266,7 @@
 			<div class="row">
 				<div class="col-sm-4"></div>
 				<div class="col-sm-4" style="padding: 10px">
-					<h4>Number Plate</h4> <input type="text" name="" size="6">
+					<h4>Number Plate</h4> <input id="number" type="text" name="" size="6">
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -249,7 +274,7 @@
 			<div class="row">
 				<div class="col-sm-4"></div>
 				<div class="col-sm-4" style="padding: 10px">
-					<h4>Make / Model</h4> <input type="text" name="" size="30">
+					<h4>Make / Model</h4> <input id="model" type="text" name="" size="30">
 				</div>
 				<div class="col-sm-4"></div>
 			</div>
@@ -257,7 +282,7 @@
 		<div class="row">
 			<div class="col-sm-4"></div>
 			<div class="col-sm-4" style="padding: 10px">
-				<h4>Year</h4><input type="text" name="" size="4">
+				<h4>Year</h4><input id="year" type="text" name="" size="4">
 			</div>
 			<div class="col-sm-4"></div>
 		</div>
@@ -265,7 +290,7 @@
 		<div class="row">
 			<div class="col-sm-4"></div>
 			<div class="col-sm-4" style="padding: 10px">
-				<button class="myButton" style="float: right">Add</button>
+				<button onclick="addVehicle()" class="myButton" style="float: right">Add</button>
 			</div>
 			<div class="col-sm-4"></div>
 		</div>

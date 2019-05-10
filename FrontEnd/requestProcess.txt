@@ -1,0 +1,23 @@
+Step One
+Customer creates the request on the front end sending a call to the api to send the request into the system.
+
+Step Two
+The request is turned into a standby request.
+
+Step Three
+Every 30 seconds professionals will querey the API with a call for standby requests that are close enough.
+
+Step Four
+The professional will accept the request by api call this will then set the request as no longer being standby but accepted
+
+Step Five
+Once the request has been accepted the customer will be able to see that it has been accepted.
+
+Step Six
+Once the job has been completed the professional will mark it as completed
+
+Step Seven
+Once the job is completed the customers display will move onto the review screen
+
+Step Eight
+The request is now complete and is put into the database.

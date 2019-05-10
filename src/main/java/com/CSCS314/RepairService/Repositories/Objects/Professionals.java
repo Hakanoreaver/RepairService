@@ -1,8 +1,7 @@
 package com.CSCS314.RepairService.Repositories.Objects;
 
 //import org.springframework.web.bind.annotations.CrossOrigins;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Professionals {
@@ -10,6 +9,8 @@ public class Professionals {
 
     //TODO Add the Location once format is decided
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "professionalId", updatable = false, nullable = false)
     private int professionalId;
     private int avRating;
     private String name;
@@ -21,6 +22,10 @@ public class Professionals {
     private String ABN;
     private String certificationNumber;
     private Double priceVariance;
+    private String possibleRequests;
+    private Double longitude;
+    private Double latitude;
+    private int requestId;
 
     //Getters
     public int getProfessionalId() {
@@ -53,6 +58,16 @@ public class Professionals {
     }
     public Double getPriceVariance() {
         return priceVariance;
+    }
+    public String getPossibleRequests() { return possibleRequests; }
+    public Double getLongitude() {
+        return longitude;
+    }
+    public Double getLatitude() {
+        return latitude;
+    }
+    public int getRequestId() {
+        return requestId;
     }
 
     //Setters
@@ -88,5 +103,15 @@ public class Professionals {
     }
     public void setPriceVariance(Double PriceVariance) {
         this.priceVariance = PriceVariance;
+    }
+    public void setPossibleRequests(String possibleRequests) { this.possibleRequests = possibleRequests;}
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 }

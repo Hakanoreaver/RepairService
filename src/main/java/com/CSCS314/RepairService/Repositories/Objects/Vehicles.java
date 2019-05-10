@@ -3,16 +3,19 @@ package com.CSCS314.RepairService.Repositories.Objects;
 //import org.springframework.web.bind.annotations.CrossOrigins;
 import org.springframework.ui.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 public class Vehicles {
     //Initialise Variables
     //TODO add Location
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "VehicleId", updatable = false, nullable = false)
     int VehicleId;
+    int userId;
     String NumberPlate;
     String MakeModel;
     int Year;
@@ -32,6 +35,10 @@ public class Vehicles {
         return Year;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     //Setters
     public void setVehicleId(int vehicleId) {
         VehicleId = vehicleId;
@@ -44,5 +51,9 @@ public class Vehicles {
     }
     public void setYear(int year) {
         Year = year;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

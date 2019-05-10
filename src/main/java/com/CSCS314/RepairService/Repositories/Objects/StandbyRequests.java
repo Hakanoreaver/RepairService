@@ -5,13 +5,12 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-public class Requests {
+public class StandbyRequests {
 
-    public Requests() {
+    public StandbyRequests() {
 
     }
-
-    public Requests(StandbyRequests r) {
+    public StandbyRequests(Requests r) {
         setRequestId(r.getRequestId());
         setCustomerId(r.getCustomerId());
         setProfessionalId(r.getProfessionalId());

@@ -1,13 +1,14 @@
 package com.CSCS314.RepairService.Repositories.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Admin {
     //Initialse variables
     @Id
-    int adminId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "adminId", updatable = false, nullable = false)
+    private int adminId;
     String passwordToken;
 
     //Getters
