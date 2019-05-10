@@ -175,7 +175,7 @@ public class MainController {
     public @ResponseBody
     boolean createCustomer(String name, String cardAuthToken, String email, String mobileNumber, String passwordToken) {
         Customers check = customerRepository.findByEmail(email);
-        if(check == null) {
+        if(check != null) {
             return false;
         }
         Customers c = new Customers();
