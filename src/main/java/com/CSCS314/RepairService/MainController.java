@@ -207,11 +207,13 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "request/start")
     public @ResponseBody
-    void startRequest(int customerId, Double longitude, Double latitude, int vehicleId, int issue) {
+    int startRequest(int customerId, Double longitude, Double latitude, int vehicleId, int issue) {
         Iterable<Professionals> profs = professionalRepository.findAll();
         Requests r = new Requests();
         r.setCustomerId(customerId);
         r.setVehicleId(vehicleId);
+        r.setLatitude(latitude);
+        r.setLongitude(longitude);
         int max;
         try {
             max = requestRepository.findMax() + 1;
@@ -226,13 +228,29 @@ public class MainController {
         System.out.println(requestRepository.findMax());
         standbyRepository.save(standby);
         System.out.println(standby.getRequestId());
+        return r.getRequestId();
+    }
 
-        for(Professionals p : profs) {
-            if(distance(longitude, latitude, p.getLongitude(), p.getLatitude(), 0, 0) < 4000) {
-                p.setPossibleRequests(p.getPossibleRequests() + Integer.toString(r.getRequestId()) + ',');
+    /**
+     * Function to get professionals that have accepted an offer
+     * @param requestId
+     * @return
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(path = "request/checkOffers/{requestId}")
+    public @ResponseBody
+    List<Professionals> startRequest(@PathVariable int requestId) {
+        ArrayList<Professionals> temp = new ArrayList<>();
+        try {
+            String profs = requestRepository.findById(requestId).getProfessionalIds();
+            for (String s : profs.split(",")) {
+                temp.add(professionalRepository.findById(Integer.parseInt(s)));
             }
+            return temp;
         }
-
+        catch (Exception e) {
+            return temp;
+        }
     }
 
     /**
@@ -242,17 +260,17 @@ public class MainController {
      * @return
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "professionals/requests/check")
+    @GetMapping(path = "professionals/requests/check")
     public @ResponseBody
     ArrayList<Requests> checkRequests(int professionalId, double longitude, double latitude) {
         Professionals p = professionalRepository.findById(professionalId);
         p.setLongitude(longitude);
         p.setLatitude(latitude);
         ArrayList<Requests> returns = new ArrayList<>();
-        for(String s : p.getPossibleRequests().split(",")) {
-            int id = Integer.parseInt(s);
-            Requests temp = requestRepository.findById(id);
-            returns.add(temp);
+        for(Requests r : requestRepository.findAll()) {
+            if(distance(longitude, latitude, p.getLongitude(), p.getLatitude(), 0, 0) < 4000 && !r.isAccepted()) {
+                returns.add(r);
+            }
         }
         return returns;
     }
@@ -264,14 +282,17 @@ public class MainController {
      * @return
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "professionals/requests/select/{professionalId}/{requestId}")
+    @GetMapping(path = "professionals/requests/select/{professionalId}/{requestId}")
     public @ResponseBody
     boolean selectRequest(@PathVariable int professionalId, @PathVariable int requestId) {
-        professionalRepository.updateRequest(requestId, professionalId);
-
-        //r.setAccepted(true);
-        long secondsSinceEpoch =  System.currentTimeMillis();
-        standbyRepository.updateDuration(secondsSinceEpoch, requestId);
+        String temp = requestRepository.findById(requestId).getProfessionalIds();
+        if(temp == null) {
+            temp = Integer.toString(professionalId);
+        }
+        else {
+            temp += "," + professionalId;
+        }
+        requestRepository.updateProfessionals(requestId, temp);
         return true;
     }
 
@@ -285,14 +306,20 @@ public class MainController {
     public @ResponseBody
     boolean completeRequest(@PathVariable int professionalId) {
         Professionals p = professionalRepository.findById(professionalId);
-        StandbyRequests r = standbyRepository.findById(p.getRequestId());
         long secondsSinceEpoch =  System.currentTimeMillis();
-        r.setDuration(secondsSinceEpoch - r.getDuration());
-        r.setFinished(true);
-        Requests temp = new Requests(r);
-        requestRepository.deleteById(temp.getRequestId());
-        requestRepository.save(temp);
-        standbyRepository.deleteById(r.getRequestId());
+        long duration = secondsSinceEpoch - requestRepository.findById(p.getRequestId()).getDuration();
+        requestRepository.updateDuration(duration, p.getRequestId());
+        requestRepository.updateFinished(true, p.getRequestId());
+        return true;
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(path = "customer/requests/select/{professionalId}/{requestId}")
+    public @ResponseBody
+    boolean selectProfessional(@PathVariable int professionalId,@PathVariable int requestId) {
+        professionalRepository.updateRequest(requestId, professionalId);
+        requestRepository.updateDuration(System.currentTimeMillis(), requestId);
+        requestRepository.updateAccepted(true, requestId);
         return true;
     }
 
@@ -351,6 +378,7 @@ public class MainController {
     double getBalance() {
         return balanceRepository.getBalance();
     }
+
 
 
     /**

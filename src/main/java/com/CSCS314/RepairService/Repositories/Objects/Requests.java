@@ -26,12 +26,15 @@ public class Requests {
     int requestId;
     int CustomerId;
     int ProfessionalId;
-    boolean Accepted = false;
+    boolean Accepted;
     int Problem;
     int VehicleId;
     long Duration;
     Date RequestDate;
-    boolean isFinished = false;
+    boolean isFinished;
+    String professionalIds;
+    double longitude;
+    double latitude;
 
     //Getters
     public int getRequestId() {
@@ -91,4 +94,31 @@ public class Requests {
         isFinished = finished;
     }
 
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public String getProfessionalIds() {
+        return professionalIds;
+    }
+
+    public void setProfessionalIds(String professionalIds) {
+        this.professionalIds = professionalIds;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 }

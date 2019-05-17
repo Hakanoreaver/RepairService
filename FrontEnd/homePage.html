@@ -102,65 +102,120 @@
 </style>
 
 <script type="text/javascript">
-	function ValidateForm()
-	{
-		var objects = document.getElementsByName("firstColumn");
-		for(var x = 0; x <  objects.length; x++) {
-			objects[x].disabled = true;
-		}
+    function ValidateForm()
+    {
+        var objects = document.getElementsByName("firstColumn");
+        for(var x = 0; x <  objects.length; x++) {
+            objects[x].disabled = true;
+        }
 
 
-		var radioButtons = document.getElementsByName("rating");
-		for(var i = 0; i < radioButtons.length; i++)
-		{
-			if(radioButtons[i].checked == true)
-			{
-				if(confirm("You have selected " + radioButtons[i].value + " as your rating"))
-					return true;
-				else
-					return false;
-			}
-		}
-	}
+        var radioButtons = document.getElementsByName("rating");
+        for(var i = 0; i < radioButtons.length; i++)
+        {
+            if(radioButtons[i].checked == true)
+            {
+                if(confirm("You have selected " + radioButtons[i].value + " as your rating"))
+                    return true;
+                else
+                    return false;
+            }
+        }
+    }
 
-	function disable(segment) {
-		var objects = document.getElementsByName(segment);
-		for(var x = 0; x <  objects.length; x++) {
-			objects[x].disabled = true;
-		}
-	}
+    function disable(segment) {
+        var objects = document.getElementsByName(segment);
+        for(var x = 0; x <  objects.length; x++) {
+            objects[x].disabled = true;
+        }
+    }
 
-	function loadWindow() {
-		document.getElementById("usernameField").innerHTML = localStorage.getItem("name");
-		var ajax = new XMLHttpRequest();
-		ajax.open('GET', 'http://localhost:9090/main/vehicles/' + localStorage.getItem("id"),false);
-		ajax.send();
-		var json = JSON.parse(ajax.responseText);
-		var selector = document.getElementById("cars");
-		for(var i = 0; i < json.length; i++) {
-			var input = document.createElement("option");
-			input.value = json[i].vehicleId;
-			input.innerHTML = json[i].numberPlate + " - " + json[i].makeModel + " - " + json[i].year;
-			selector.appendChild(input);
-		}
+    function loadWindow() {
+        document.getElementById("usernameField").innerHTML = localStorage.getItem("name");
+        var ajax = new XMLHttpRequest();
+        ajax.open('GET', 'http://localhost:9090/main/vehicles/' + localStorage.getItem("id"),false);
+        ajax.send();
+        var json = JSON.parse(ajax.responseText);
+        var selector = document.getElementById("cars");
+        for(var i = 0; i < json.length; i++) {
+            var input = document.createElement("option");
+            input.value = json[i].vehicleId;
+            input.innerHTML = json[i].numberPlate + " - " + json[i].makeModel + " - " + json[i].year;
+            selector.appendChild(input);
+        }
 
-	}
+        ajax.open('GET', 'http://localhost:9090/main/services/all',false);
+        ajax.send();
+        json = JSON.parse(ajax.responseText);
 
-	function addVehicle() {
-		var number = document.getElementById("number").value;
-		var model = document.getElementById("model").value;
-		var year = document.getElementById("year").value;
-		var ajax = new XMLHttpRequest();
-		ajax.open('POST', 'http://localhost:9090/main/addVehicle/' + localStorage.getItem("id") + '/' + number + '/' + model  + '/' + year,false);
-		ajax.send();
-		alert(ajax.responseText);
-		location.reload();
-a	}
-</script>
+        var issues = document.getElementById("issue");
+        for(var i = 0; i < json.length; i++) {
+            var input = document.createElement("option");
+            input.value = json[i].id;
+            input.innerHTML = json[i].name;
+            issues.appendChild(input);
+        }
 
-<script type="text/javascript">
+    }
+
+    function addVehicle() {
+        var number = document.getElementById("number").value;
+        var model = document.getElementById("model").value;
+        var year = document.getElementById("year").value;
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', 'http://localhost:9090/main/addVehicle/' + localStorage.getItem("id") + '/' + number + '/' + model  + '/' + year,false);
+        ajax.send();
+        alert(ajax.responseText);
+        location.reload();
+    }
+
+	var checkProfessionalsCheck;
+
 	function lodgeRequest() {
+        var e = document.getElementById("issue");
+		var issueId = e.options[e.selectedIndex].value;
+        e = document.getElementById("cars");
+        var carId = e.options[e.selectedIndex].value;
+		var longitude = 50;
+		var latitude = 50;
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', 'http://localhost:9090/main/request/start?customerId=' + localStorage.getItem("id") + "&longitude=" + longitude + "&latitude=" + latitude
+			+ "&vehicleId=" + carId + "&issue=" + issueId,false);
+        ajax.send();
+        if(ajax.responseText > 0) {
+            localStorage.setItem("requestId", ajax.responseText);
+		}
+        document.getElementById("professionalDiv").style.visibility = "visible";
+        document.getElementById("lodgeDiv").style.visibility = "hidden";
+        checkProfessionalsCheck = setInterval(function() {checkProfessionals()}, 20000);
+	}
 
+	function checkProfessionals() {
+	    var append = document.getElementById("professionals");
+        while (append.firstChild) {
+            append.removeChild(append.firstChild);
+        }
+	    try {
+            var ajax = new XMLHttpRequest();
+            ajax.open('POST', 'http://localhost:9090/main/request/checkOffers/' + localStorage.getItem("requestId"), false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+            for(var i = 0; i <  json.length; i++) {
+                var div = document.createElement("div");
+                div.innerHTML = json[i].name + " " + json[i].avRating + " " + json[i].priceVariance;
+                var button = document.createElement("button");
+                button.id = json[i].professionalId;
+                button.innerHTML = "Hire";
+                button.onclick = function() {
+                    selectProfessional(button.id);
+				};
+                div.appendChild(button);
+                append.appendChild(div);
+			}
+        }
+        catch (e) {
+			alert(e);
+        }
 	}
 
 	function updateRequest() {
@@ -175,8 +230,10 @@ a	}
 
 	}
 
-	function selectProfessional() {
-		
+	function selectProfessional(profId) {
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', 'http://localhost:9090/main/customer/requests/select/' + profId + '/' + localStorage.getItem("requestId"), false);
+        ajax.send();
 	}
 </script>
 </head>
@@ -190,22 +247,13 @@ a	}
 			<button align="right" class="myButton">Log Out</button>
 		</div>
 	</div>
-	<div id="firstRow" class="row" style="height: 400px">
+	<div id="lodgeDiv" class="row" style="height: 400px">
 		<div class="col-sm-4" style="background-color: #0cffd6" align="middle">
 			<h3 align="middle" name="firstColumn"> Lodge Issue </h3>
 			<div style="height: 80px" name="firstColumn"></div>
 			Select Issue 
-			<select name="firstColumn">
-				<option value="1">Car wont start</option>
-				<option value="2">Warning Lights</option>
-				<option value="3">Sputtering Engine</option>
-				<option value="4">Dead Battery</option>
-				<option value="5">Flat Tire</option>
-				<option value="6">Brakes Not Working</option>
-				<option value="7">Brakes Grinding</option>
-				<option value="8">Steering Wheel Shaking</option>
-				<option value="9">Engine Smoking</option>
-				<option value="10">Stopping and Starting</option>
+			<select id="issue">
+
 			</select>
 			<br>
 			<br>
@@ -215,28 +263,15 @@ a	}
 				
 			</select>
 			<div style="height: 80px"></div>
-			<button class="myButton" name="firstColumn">Place Request</button>
+			<button class="myButton" name="firstColumn" onclick="lodgeRequest()">Place Request</button>
 		</div>
-		<div class="col-sm-4" style="background-color: #ea00f7">
+		<div id="professionalDiv" class="col-sm-4" style="background-color: #ea00f7; visibility: hidden">
 			<h3 align="middle"> Select Professional </h3>
-			<div class=" col-sm anyClass">
-				<div style="height: 60px">
-					Professional       One Rating     Review       Price
-					<button style="float: right">Hire</button>
-				</div>
+			<div id="professionals" class=" col-sm anyClass">
 
-				<div style="height: 60px">
-					Professional       One Rating     Review       Price
-					<button style="float: right">Hire</button>
-				</div>
-
-				<div style="height: 40px">
-					Professional       One Rating     Review       Price
-					<button style="float: right">Hire</button>
-				</div>
 			</div>
 		</div>
-		<div class="col-sm-4" style="background-color: #00c42a">
+		<div id="reviewDiv" class="col-sm-4" style="background-color: #00c42a; visibility: hidden">
 			<h3 align="middle"> Complete Review </h3>
 			<div style="height: 40px" id="firstColumn"></div>
 			<div class="col-sm">
