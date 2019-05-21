@@ -115,20 +115,13 @@
         {
             if(radioButtons[i].checked == true)
             {
-                if(confirm("You have selected " + radioButtons[i].value + " as your rating"))
-                    return true;
-                else
-                    return false;
+               
+                return radioButtons[i].value;
             }
         }
     }
 
-    function disable(segment) {
-        var objects = document.getElementsByName(segment);
-        for(var x = 0; x <  objects.length; x++) {
-            objects[x].disabled = true;
-        }
-    }
+    
 
     function loadWindow() {
         document.getElementById("usernameField").innerHTML = localStorage.getItem("name");
@@ -151,7 +144,7 @@
         var issues = document.getElementById("issue");
         for(var i = 0; i < json.length; i++) {
             var input = document.createElement("option");
-            input.value = json[i].id;
+            input.value = json[i].id + 1;
             input.innerHTML = json[i].name;
             issues.appendChild(input);
         }
@@ -169,15 +162,15 @@
         location.reload();
     }
 
-	var checkProfessionalsCheck;
+	var checkRequests;
 
 	function lodgeRequest() {
         var e = document.getElementById("issue");
 		var issueId = e.options[e.selectedIndex].value;
         e = document.getElementById("cars");
         var carId = e.options[e.selectedIndex].value;
-		var longitude = 50;
-		var latitude = 50;
+		var longitude = 0;
+		var latitude = 0;
         var ajax = new XMLHttpRequest();
         ajax.open('POST', 'http://localhost:9090/main/request/start?customerId=' + localStorage.getItem("id") + "&longitude=" + longitude + "&latitude=" + latitude
 			+ "&vehicleId=" + carId + "&issue=" + issueId,false);
@@ -187,7 +180,7 @@
 		}
         document.getElementById("professionalDiv").style.visibility = "visible";
         document.getElementById("lodgeDiv").style.visibility = "hidden";
-        checkProfessionalsCheck = setInterval(function() {checkProfessionals()}, 20000);
+        checkRequests = setInterval(function() {checkProfessionals()}, 10000);
 	}
 
 	function checkProfessionals() {
@@ -218,12 +211,13 @@
         }
 	}
 
-	function updateRequest() {
-
-	}
-
 	function lodgeReview() {
-
+		var amount = ValidateForm();
+		var string = document.getElementById("review").value;
+		var ajax = new XMLHttpRequest();
+        ajax.open('GET', 'http://localhost:9090/main/review/lodge/' + localStorage.getItem("requestId") + "/" + string + "/" + amount, false);
+        ajax.send();
+		location.reload();
 	}
 
 	function editAccount() {
@@ -234,6 +228,25 @@
         var ajax = new XMLHttpRequest();
         ajax.open('POST', 'http://localhost:9090/main/customer/requests/select/' + profId + '/' + localStorage.getItem("requestId"), false);
         ajax.send();
+        document.getElementById("professionalDiv").style.visibility = "hidden";
+        document.getElementById("reviewDiv").style.visibility = "visible";
+        clearInterval(checkRequests);
+	    checkRequests = setInterval(function() {isFinished()}, 10000);
+	}
+
+	function isFinished() {
+		alert("here");
+		var ajax = new XMLHttpRequest();
+        ajax.open('POST', 'http://localhost:9090/main/customer/requests/status/' + localStorage.getItem("requestId"), false);
+        ajax.send();
+        alert(ajax.responseText);
+        if(ajax.responseText == "true") {
+        	document.getElementById("four").disabled = false;
+        	clearInterval(checkRequests);
+        }
+        else if(ajax.responseText == "true") {
+
+        }
 	}
 </script>
 </head>
@@ -275,22 +288,22 @@
 			<h3 align="middle"> Complete Review </h3>
 			<div style="height: 40px" id="firstColumn"></div>
 			<div class="col-sm">
-				<textarea style="width: 100%; height: 100px" placeholder="100 character review" size="100"></textarea>
+				<textarea id="review" style="width: 100%; height: 100px" placeholder="100 character review" size="100"></textarea>
 			</div>
 			<fieldset class="rating" style="padding-left: 15px">
 				<input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-				<input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+				<input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
 				<input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-				<input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+				<input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
 				<input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-				<input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+				<input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
 				<input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-				<input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+				<input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
 				<input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-				<input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+				<input type="radio" id="starhalf" name="rating" value=".5" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
 			</fieldset>
 			<div style="height: 80px" id="firstColumn"></div>
-			<button onclick="ValidateForm()" class="myButton" style="float: right">Submit</button>
+			<button onclick="lodgeReview()" class="myButton"  id="four" disabled="true" style="float: right">Submit</button>
 			
 		</div>
 	</div>

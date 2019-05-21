@@ -110,10 +110,99 @@
 	</style>
 
 	<script type="text/javascript">
+		var checkRequests;
+		var requestId;
+
 		function load() {
-			document.getElementById("professionalName").innerHTML = localStore.getItem("name");
+			document.getElementById("professionalName").innerHTML = localStorage.getItem("name");
+			checkRequests = setInterval(function() {check()}, 10000);
 		}
 		window.onload = load;
+
+		function check() {
+			var append = document.getElementById("rows");
+	        while (append.firstChild) {
+	            append.removeChild(append.firstChild);
+	        }
+			var ajax = new XMLHttpRequest();
+	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/check/?professionalId=' + localStorage.getItem("pid") + '&longitude=0&latitude=0',false);
+	        ajax.send();
+	        var json = JSON.parse(ajax.responseText);
+	        if(json.length == 0 || json == null) {
+	        	alert(json.length + " No Requests Nearby")
+	        	return;
+	        }
+	        
+
+	        for(var i = 0; i < json.length; i++) {
+	        	var tr = document.createElement("tr");
+	        	var td = document.createElement("td");
+	        	td.innerHTML = json[i].distance;
+	        	var td1 = document.createElement("td");
+	        	td1.innerHTML = json[i].issue;
+	        	var td2 = document.createElement("td");
+	        	td2.innerHTML = json[i].vd;
+	        	var td4 = document.createElement("td");
+	        	td4.innerHTML = json[i].cost;
+	        	var td3 = document.createElement("td");
+	        	var button = document.createElement("button");
+	        	button.innerHTML = "Select";
+	        	button.id = json[i].id;
+	        	button.onclick = function() {
+	        		acceptRequest(button.id);
+	        	}
+	        	td3.appendChild(button);
+	        	tr.appendChild(td);
+	        	tr.appendChild(td1);
+	        	tr.appendChild(td2);
+	        	tr.appendChild(td4);
+	        	tr.appendChild(td3);
+	        	append.appendChild(tr);
+	        }
+		}
+
+		function acceptRequest(id) {
+			alert(id);
+			var ajax = new XMLHttpRequest();
+	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/select/' + localStorage.getItem("pid") + "/" + id,false);
+	        ajax.send();
+	        requestId = id;
+	        clearInterval(checkRequests);
+	        checkRequests = setInterval(function() {checkIfAccepted(id)}, 10000);
+	        document.getElementById("one").style.visibility = "hidden";
+	        document.getElementById("two").style.visibility = "visible";
+
+		}
+
+		function checkIfAccepted(id) {
+			alert(id + "requestId");
+			var ajax = new XMLHttpRequest();
+	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/checkIfAccepted/' + localStorage.getItem("pid") + "/" + id,false);
+	        alert('http://localhost:9090/main/professionals/requests/checkIfAccepted/' + localStorage.getItem("pid") + "/" + id);
+	        ajax.send();
+	        if(ajax.responseText == -1) {
+	        	clearInterval(checkRequests);
+	        	checkRequests = setInterval(function() {check()}, 10000);
+	        	document.getElementById("one").style.visibility = "visible";
+	        document.getElementById("two").style.visibility = "hidden";
+	        }
+	        if(ajax.responseText == 0) {
+	        	//Do Nothing
+	        }
+	        if(ajax.responseText == 1) {
+	        	clearInterval(checkRequests);
+	        	document.getElementById("two").style.visibility = "hidden";
+	        	document.getElementById("three").style.visibility = "visible";
+	        	document.getElementById("four").style.visibility = "visible";
+	        }
+		}
+
+		function finishJob() {
+			var ajax = new XMLHttpRequest();
+	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/complete/' + localStorage.getItem("pid"),false);
+	        ajax.send();
+	        location.reload();
+		}
 	</script>
 
 </head>
@@ -130,22 +219,28 @@
 	<div class="col-sm-4"></div>
 <div class="col-sm-4">
 			<h3 align="middle"> Job List </h3>
-			<div class=" col-sm anyClass">
-				<div style="height: 60px">
-					Distance     Issue     Time Left
-					<button style="float: right">Accept</button>
-				</div>
-
-				<div style="height: 60px">
-					Distance     Issue     Time Left
-					<button style="float: right">Accept</button>
-				</div>
-
-				<div style="height: 40px">
-					Distance     Issue     Time Left
-					<button style="float: right">Accept</button>
-				</div>
+			<div class=" col-sm anyClass" id="one">
+				 <table class="table table-striped" style="height: 300px; width: 30%">
+			 	<thead>
+			 		<tr>
+			 			<th scope="col">Distance</th>
+			 			<th scope="col">Issue</th>
+			 			<th scope="col">Car</th>
+			 			<th scope="col">Price</th>
+			 			<th scope="col">Select</th>
+			 		</tr>
+			 	</thead>
+			 	<tbody id="rows"> 
+			 	</tbody>
+			 </table>
 			</div>
+			<div id="two" style="visibility: hidden">
+				<h1> waiting on response </h1>
+			</div>
+			<div id="three" style="visibility: hidden">
+				<h1> Travelling to Job </h1>
+			</div>
+			<button style="height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden" onclick="finishJob()" id="four">Finish Job</button>
 		</div>
 		<div class="col-sm-4"></div>
 	</div>

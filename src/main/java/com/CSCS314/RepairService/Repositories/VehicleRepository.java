@@ -12,8 +12,10 @@ import java.util.List;
 
 @Repository
 public interface VehicleRepository extends CrudRepository<Vehicles, String> {
+    @Query("SELECT v FROM Vehicles v WHERE v.VehicleId = :vehicleId")
+    public Vehicles findById(@Param("vehicleId") int vehicleId);
 
     @Query("SELECT v FROM Vehicles v WHERE v.userId = :userId")
-    public List<Vehicles> findById(@Param("userId") int userId);
+    public List<Vehicles> findByUserId(@Param("userId") int userId);
 }
 

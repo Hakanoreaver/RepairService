@@ -17,7 +17,7 @@ public class Reviews {
     int ReviewId;
     int CustomerId;
     String TextString;
-    int Rating;
+    double Rating;
     int ProfessionalId;
 
     //Getters
@@ -30,7 +30,7 @@ public class Reviews {
     public String getTextString() {
         return TextString;
     }
-    public int getRating() {
+    public double getRating() {
         return Rating;
     }
     public int getProfessionalId() {
@@ -47,7 +47,7 @@ public class Reviews {
     public void setTextString(String textString) {
         TextString = textString;
     }
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         Rating = rating;
     }
     public void setProfessionalId(int professionalId) {

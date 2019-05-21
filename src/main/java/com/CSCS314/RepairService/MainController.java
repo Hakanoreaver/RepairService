@@ -1,5 +1,6 @@
 package com.CSCS314.RepairService;
 
+import com.CSCS314.RepairService.Models.RequestReturnProfessional;
 import com.CSCS314.RepairService.Repositories.*;
 import com.CSCS314.RepairService.Repositories.Objects.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class MainController {
     private TransactionRepository transactionRepository;
     @Autowired
     private BalanceRepository balanceRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     /**
      * This is the test to see if the backend is live.
@@ -67,7 +70,7 @@ public class MainController {
     @GetMapping(path = "vehicles/{userId}")
     public @ResponseBody
     List<Vehicles> logInUser(@PathVariable int userId) {
-        return vehicleRepository.findById(userId);
+        return vehicleRepository.findByUserId(userId);
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
@@ -150,6 +153,20 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "review/lodge/{requestId}/{review}/{rating}")
+    public @ResponseBody
+    void lodgeReview(@PathVariable int requestId, @PathVariable String review, @PathVariable double rating) {
+        Requests temp = requestRepository.findById(requestId);
+        Reviews rev = new Reviews();
+        rev.setCustomerId(temp.getCustomerId());
+        rev.setProfessionalId(temp.getProfessionalId());
+        rev.setRating(rating);
+        rev.setTextString(review);
+        reviewRepository.save(rev);
+
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "professional/create")
     public @ResponseBody
     boolean createProfessional(String email, String name, String bankToken, String mobileNumber, String passwordToken, String ABN, String certificationNumber, double priceVariance) {
@@ -208,12 +225,13 @@ public class MainController {
     @PostMapping(path = "request/start")
     public @ResponseBody
     int startRequest(int customerId, Double longitude, Double latitude, int vehicleId, int issue) {
-        Iterable<Professionals> profs = professionalRepository.findAll();
         Requests r = new Requests();
         r.setCustomerId(customerId);
         r.setVehicleId(vehicleId);
         r.setLatitude(latitude);
+        r.setProblem(issue);
         r.setLongitude(longitude);
+        r.setAccepted(false);
         int max;
         try {
             max = requestRepository.findMax() + 1;
@@ -223,11 +241,6 @@ public class MainController {
         }
         r.setRequestId(max);
         requestRepository.save(r);
-        StandbyRequests standby = new StandbyRequests(r);
-        System.out.println(r.getRequestId());
-        System.out.println(requestRepository.findMax());
-        standbyRepository.save(standby);
-        System.out.println(standby.getRequestId());
         return r.getRequestId();
     }
 
@@ -262,14 +275,24 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/requests/check")
     public @ResponseBody
-    ArrayList<Requests> checkRequests(int professionalId, double longitude, double latitude) {
+    ArrayList<RequestReturnProfessional> checkRequests(int professionalId, double longitude, double latitude) {
         Professionals p = professionalRepository.findById(professionalId);
         p.setLongitude(longitude);
         p.setLatitude(latitude);
-        ArrayList<Requests> returns = new ArrayList<>();
+        ArrayList<RequestReturnProfessional> returns = new ArrayList<>();
         for(Requests r : requestRepository.findAll()) {
-            if(distance(longitude, latitude, p.getLongitude(), p.getLatitude(), 0, 0) < 4000 && !r.isAccepted()) {
-                returns.add(r);
+            double distance = distance(longitude, latitude, p.getLongitude(), p.getLatitude(), 0, 0);
+            System.out.println("Distance is " + distance);
+            if(distance < 4000 && !r.isAccepted()) {
+                RequestReturnProfessional temp = new RequestReturnProfessional();
+                temp.setDistance(distance);
+                Services s = serviceRepository.findById(r.getProblem());
+                temp.setIssue(s.getName());
+                Vehicles v = vehicleRepository.findById(r.getVehicleId());
+                temp.setVd(v.getMakeModel() + " " + v.getYear() + " " + v.getNumberPlate());
+                temp.setCost(s.getCost() * (p.getPriceVariance() + 1));
+                temp.setId(r.getRequestId());
+                returns.add(temp);
             }
         }
         return returns;
@@ -302,7 +325,7 @@ public class MainController {
      * @return
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "professionals/requests/complete/{professionalId}")
+    @GetMapping(path = "professionals/requests/complete/{professionalId}")
     public @ResponseBody
     boolean completeRequest(@PathVariable int professionalId) {
         Professionals p = professionalRepository.findById(professionalId);
@@ -314,10 +337,22 @@ public class MainController {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "professionals/requests/checkIfAccepted/{professionalId}/{requestId}")
+    public @ResponseBody
+    int checkIfAcceptedProfessional(@PathVariable int professionalId, @PathVariable int requestId) {
+        Requests r = requestRepository.findById(requestId);
+        System.out.println(r.isAccepted() + " " + requestId);
+        if(!r.isAccepted()) return 0;
+        else if(r.getProfessionalId() != professionalId) return -1;
+        else return 1;
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "customer/requests/select/{professionalId}/{requestId}")
     public @ResponseBody
     boolean selectProfessional(@PathVariable int professionalId,@PathVariable int requestId) {
         professionalRepository.updateRequest(requestId, professionalId);
+        requestRepository.updateProfessional(professionalId, requestId);
         requestRepository.updateDuration(System.currentTimeMillis(), requestId);
         requestRepository.updateAccepted(true, requestId);
         return true;
@@ -327,7 +362,8 @@ public class MainController {
     @PostMapping(path = "customer/requests/status/{requestId}")
     public @ResponseBody
     boolean getRequestStatus(@PathVariable int requestId) {
-        return requestRepository.findById(requestId).isAccepted();
+        System.out.println(requestRepository.findById(requestId).isFinished());
+        return requestRepository.findById(requestId).isFinished();
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")

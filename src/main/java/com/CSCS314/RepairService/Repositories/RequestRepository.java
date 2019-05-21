@@ -37,5 +37,10 @@ public interface RequestRepository extends CrudRepository<Requests, Integer> {
     @Transactional
     @Query("UPDATE Requests p SET p.Accepted = :finished WHERE p.requestId = :requestId")
     public void updateAccepted(@Param("finished") boolean finished,@Param("requestId") Integer requestId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Requests p SET p.ProfessionalId = :professionalId WHERE p.requestId = :requestId")
+    public void updateProfessional(@Param("professionalId") int professionalId,@Param("requestId") Integer requestId);
 }
 
