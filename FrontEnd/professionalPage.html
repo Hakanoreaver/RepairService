@@ -184,7 +184,7 @@
 	        	clearInterval(checkRequests);
 	        	checkRequests = setInterval(function() {check()}, 10000);
 	        	document.getElementById("one").style.visibility = "visible";
-	        document.getElementById("two").style.visibility = "hidden";
+	        	document.getElementById("two").style.visibility = "hidden";
 	        }
 	        if(ajax.responseText == 0) {
 	        	//Do Nothing
@@ -201,7 +201,7 @@
 			var ajax = new XMLHttpRequest();
 	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/complete/' + localStorage.getItem("pid"),false);
 	        ajax.send();
-	        location.reload();
+	        if()
 		}
 	</script>
 
@@ -240,7 +240,7 @@
 			<div id="three" style="visibility: hidden">
 				<h1> Travelling to Job </h1>
 			</div>
-			<button style="height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden" onclick="finishJob()" id="four">Finish Job</button>
+			<button style="height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden;" onclick="finishJob()" id="four">Finish Job</button>
 		</div>
 		<div class="col-sm-4"></div>
 	</div>
