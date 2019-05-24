@@ -328,7 +328,17 @@ public class MainController {
     @GetMapping(path = "professionals/requests/complete/{professionalId}")
     public @ResponseBody
     boolean completeRequest(@PathVariable int professionalId) {
+        Transactions t = new Transactions();
+
         Professionals p = professionalRepository.findById(professionalId);
+        Requests r = requestRepository.findById(p.getRequestId());
+        Services s = serviceRepository.findById(r.getProblem());
+        double amount = s.getCost() * (p.getPriceVariance() + 1) - 10;
+        t.setAmount(amount);
+        balanceRepository.updateBalance(balanceRepository.getBalance() - amount);
+        t.setRequestId(p.getRequestId());
+        t.setStatus("Payment from us to professional");
+
         long secondsSinceEpoch =  System.currentTimeMillis();
         long duration = secondsSinceEpoch - requestRepository.findById(p.getRequestId()).getDuration();
         requestRepository.updateDuration(duration, p.getRequestId());
@@ -351,6 +361,24 @@ public class MainController {
     @PostMapping(path = "customer/requests/select/{professionalId}/{requestId}")
     public @ResponseBody
     boolean selectProfessional(@PathVariable int professionalId,@PathVariable int requestId) {
+        Requests r = requestRepository.findById(requestId);
+        Customers c = customerRepository.findById(r.getCustomerId());
+        double amount;
+        if(c.getCustomerType()) {
+            amount = 30;
+        }
+        else {
+            Transactions t = new Transactions();
+            Professionals p = professionalRepository.findById(professionalId);
+            Services s = serviceRepository.findById(r.getProblem());
+            amount = s.getCost() * (p.getPriceVariance() + 1);
+        }
+        Transactions t = new Transactions();
+        t.setAmount(amount);
+        t.setRequestId(requestId);
+        t.setStatus("Payment from customer to us");
+        balanceRepository.updateBalance(balanceRepository.getBalance() + amount);
+        transactionRepository.save(t);
         professionalRepository.updateRequest(requestId, professionalId);
         requestRepository.updateProfessional(professionalId, requestId);
         requestRepository.updateDuration(System.currentTimeMillis(), requestId);
