@@ -338,7 +338,7 @@ public class MainController {
         balanceRepository.updateBalance(balanceRepository.getBalance() - amount);
         t.setRequestId(p.getRequestId());
         t.setStatus("Payment from us to professional");
-
+        transactionRepository.save(t);
         long secondsSinceEpoch =  System.currentTimeMillis();
         long duration = secondsSinceEpoch - requestRepository.findById(p.getRequestId()).getDuration();
         requestRepository.updateDuration(duration, p.getRequestId());

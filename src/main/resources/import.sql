@@ -10,6 +10,8 @@ INSERT INTO professionals VALUES (4, 'abn', 5, 'banktoken', 'certnumnber', 'emai
 /*Admin*/
 INSERT INTO admin VALUES(1,'password');
 
+INSERT INTO balance VALUES(1, 1000);
+
 INSERT INTO Services VALUES(1,10.00,'Car wont start')
 INSERT INTO Services VALUES(2,10.00,'Warning Lights')
 INSERT INTO Services VALUES(3,10.00,'Sputtering Engine')

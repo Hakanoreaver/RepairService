@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BalanceRepository extends CrudRepository<Balance, Integer> {
-    @Query("SELECT b FROM Balance b WHERE b.balanceId = 1")
+    @Query("SELECT b.balance FROM Balance b WHERE b.balanceId = 1")
     public double getBalance();
 
     @Modifying
