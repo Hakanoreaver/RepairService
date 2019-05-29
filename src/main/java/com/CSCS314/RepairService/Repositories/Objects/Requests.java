@@ -11,15 +11,7 @@ public class Requests {
 
     }
 
-    public Requests(StandbyRequests r) {
-        setRequestId(r.getRequestId());
-        setCustomerId(r.getCustomerId());
-        setProfessionalId(r.getProfessionalId());
-        setAccepted(r.Accepted);
-        setProblem(r.getProblem());
-        setVehicleId(r.getVehicleId());
-        setDuration(r.getDuration());
-    }
+
     //Initialise Variables
     //TODO add Location
     @Id

@@ -1,7 +1,6 @@
 package com.CSCS314.RepairService.Repositories.Objects;
 
 //import org.springframework.web.bind.annotations.CrossOrigins;
-import org.springframework.ui.Model;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -16,8 +15,8 @@ public class Transactions {
     @Column(name = "TransactionalId", updatable = false, nullable = false)
     int TransactionalId;
     int RequestId;
-    Double Amount;
-    String Status;
+    Double amount;
+    String status;
     Date date;
 
     //Getters
@@ -28,10 +27,10 @@ public class Transactions {
         return RequestId;
     }
     public Double getAmount() {
-        return Amount;
+        return amount;
     }
     public String getStatus() {
-        return Status;
+        return status;
     }
     public Date getDate() {
         return date;
@@ -45,10 +44,10 @@ public class Transactions {
         RequestId = requestId;
     }
     public void setAmount(Double amount) {
-        Amount = amount;
+        this.amount = amount;
     }
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
     public void setDate(Date date) {
         this.date = date;

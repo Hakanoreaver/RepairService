@@ -1,20 +1,26 @@
 package com.CSCS314.RepairService;
 
 import com.CSCS314.RepairService.Models.RequestReturnProfessional;
+import com.CSCS314.RepairService.Models.TakingsRequest;
 import com.CSCS314.RepairService.Repositories.*;
 import com.CSCS314.RepairService.Repositories.Objects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+/**
+ * This is the main controller that handles all API endpoints
+ */
 @Controller // This means that this class is a Controller
 @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping(path="/main")  // This means URL's start with /main (after Application path)
 public class MainController {
 
+    //Declaration of all of our repositories
     @Autowired
     private CustomersRepository customerRepository;
     @Autowired
@@ -23,8 +29,6 @@ public class MainController {
     private AdminRepository adminRepository;
     @Autowired
     private RequestRepository requestRepository;
-    @Autowired
-    private StandbyRepository standbyRepository;
     @Autowired
     private VehicleRepository vehicleRepository;
     @Autowired
@@ -66,6 +70,11 @@ public class MainController {
             return "Username or Password not found";
     }
 
+    /**
+     * This returns all vehicles for a user
+     * @param userId
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "vehicles/{userId}")
     public @ResponseBody
@@ -73,6 +82,14 @@ public class MainController {
         return vehicleRepository.findByUserId(userId);
     }
 
+    /**
+     * This adds a vehicle for a user
+     * @param userId
+     * @param number
+     * @param make
+     * @param year
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "addVehicle/{userId}/{number}/{make}/{year}")
     public @ResponseBody
@@ -152,6 +169,12 @@ public class MainController {
         return prof;
     }
 
+    /**
+     * This is an endpoint for a user to lodge a review
+     * @param requestId
+     * @param review
+     * @param rating
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "review/lodge/{requestId}/{review}/{rating}")
     public @ResponseBody
@@ -166,6 +189,18 @@ public class MainController {
 
     }
 
+    /**
+     * This is an API to create a new professional
+     * @param email
+     * @param name
+     * @param bankToken
+     * @param mobileNumber
+     * @param passwordToken
+     * @param ABN
+     * @param certificationNumber
+     * @param priceVariance
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "professional/create")
     public @ResponseBody
@@ -187,6 +222,15 @@ public class MainController {
         return true;
     }
 
+    /**
+     * This is an API to create a new User
+     * @param name
+     * @param cardAuthToken
+     * @param email
+     * @param mobileNumber
+     * @param passwordToken
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "user/create")
     public @ResponseBody
@@ -205,6 +249,10 @@ public class MainController {
         return true;
     }
 
+    /**
+     * This is an api to create a new Admin
+     * @param passwordToken
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "admin/create")
     public @ResponseBody
@@ -267,10 +315,11 @@ public class MainController {
     }
 
     /**
-     * @param professionalId
-     * @param longitude
-     * @param latitude
-     * @return
+     * This is an api for professionals to check nearby requests
+     * @param professionalId id of a professional
+     * @param longitude longitude
+     * @param latitude latitude
+     * @return return a list of requestreturns to the professional
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/requests/check")
@@ -299,10 +348,11 @@ public class MainController {
     }
 
     /**
+     * This is an api for a professional to select a request.
      * http://localhost:9090/main/professionals/requests/select/1/1
-     * @param professionalId
-     * @param requestId
-     * @return
+     * @param professionalId id of a professional
+     * @param requestId id of a request
+     * @return return true if the operation successfuly completed
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/requests/select/{professionalId}/{requestId}")
@@ -320,9 +370,10 @@ public class MainController {
     }
 
     /**
+     * This is an api for a professional to complete a request
      * http://localhost:9090/main/professionals/requests/complete/1
-     * @param professionalId
-     * @return
+     * @param professionalId id of a professional
+     * @return return true once the operation is completed
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/requests/complete/{professionalId}")
@@ -346,6 +397,12 @@ public class MainController {
         return true;
     }
 
+    /**
+     * This is an API for professionals to check if the request they selected was accepted
+     * @param professionalId id of a professional
+     * @param requestId id of a request
+     * @return returns an int from -1 , 0 , 1
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/requests/checkIfAccepted/{professionalId}/{requestId}")
     public @ResponseBody
@@ -357,6 +414,12 @@ public class MainController {
         else return 1;
     }
 
+    /**
+     * This is an API for a customer to select a profesional to perform the job for them.
+     * @param professionalId
+     * @param requestId
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "customer/requests/select/{professionalId}/{requestId}")
     public @ResponseBody
@@ -386,6 +449,11 @@ public class MainController {
         return true;
     }
 
+    /**
+     * This is an API for customers to check if the request has been completed
+     * @param requestId
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(path = "customer/requests/status/{requestId}")
     public @ResponseBody
@@ -394,6 +462,10 @@ public class MainController {
         return requestRepository.findById(requestId).isFinished();
     }
 
+    /**
+     * This is an API to return all customers
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "customer/all")
     public @ResponseBody
@@ -401,6 +473,10 @@ public class MainController {
         return customerRepository.findAll();
     }
 
+    /**
+     * This is an api to return all professionals
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionals/all")
     public @ResponseBody
@@ -415,6 +491,10 @@ public class MainController {
         return vehicleRepository.findAll();
     }
 
+    /**
+     * This is an api to return all services
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "services/all")
     public @ResponseBody
@@ -422,6 +502,10 @@ public class MainController {
         return serviceRepository.findAll();
     }
 
+    /**
+     * This is an API to return all requests
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "requests/all")
     public @ResponseBody
@@ -429,6 +513,10 @@ public class MainController {
         return requestRepository.findAll();
     }
 
+    /**
+     * This is an API to return all transactions
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "transactions/all")
     public @ResponseBody
@@ -436,12 +524,94 @@ public class MainController {
         return transactionRepository.findAll();
     }
 
+    /**
+     * This is an api to return the balance
+     * @return
+     */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "balance")
     public @ResponseBody
     double getBalance() {
         return balanceRepository.getBalance();
     }
+
+    /**
+     * This is an API to return a takins report between two dates
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "takingsReport/{startDate}/{endDate}")
+    public @ResponseBody
+    TakingsRequest takingsReport(@PathVariable java.util.Date startDate, @PathVariable java.util.Date endDate) {
+        TakingsRequest tr = new TakingsRequest();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDatee = new Date(startDate.getTime());
+            Date endDatee = new Date(endDate.getTime());
+            double outgoingAverage = transactionRepository.averageBetweenDates("Outgoing", startDatee, endDatee);
+            double incomingAverage = transactionRepository.averageBetweenDates("Incoming", startDatee, endDatee);
+            tr.setAverageIncoming(incomingAverage);
+            tr.setAverageOutgoing(outgoingAverage);
+            tr.setTotalIncoming(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
+            tr.setTotalOutgoing(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
+            tr.setLowestIncoming(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
+            tr.setLowestOutgoing(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
+            tr.setHighestIncoming(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
+            tr.setHighestOutoing(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
+        }
+        catch (Exception e) {
+
+        }
+        System.out.println();
+
+
+        return tr;
+    }
+
+    /**
+     * This is an api to return a customer report
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "customerReport")
+    public @ResponseBody
+    void customerReport() {
+        //TODO
+    }
+
+    /**
+     * This is an API to return a professional report.
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "professionalReport")
+    public @ResponseBody
+    void professionalReport() {
+        //TODO
+    }
+
+    /**
+     * This is an API to return a request report between two dates
+     * @param startDate
+     * @param endDate
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "requestsReport/{startDate}/{endDate}")
+    public @ResponseBody
+    void requestReport(@PathVariable Date startDate, @PathVariable Date endDate) {
+        //TODO
+    }
+
+    /**
+     * This is an API to return a problem report.
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "problemReport")
+    public @ResponseBody
+    void problemReport() {
+        //TODO
+    }
+
 
 
 
