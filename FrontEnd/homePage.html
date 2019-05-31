@@ -235,11 +235,9 @@
 	}
 
 	function isFinished() {
-		alert("here");
 		var ajax = new XMLHttpRequest();
         ajax.open('POST', 'http://localhost:9090/main/customer/requests/status/' + localStorage.getItem("requestId"), false);
         ajax.send();
-        alert(ajax.responseText);
         if(ajax.responseText == "true") {
         	document.getElementById("four").disabled = false;
         	clearInterval(checkRequests);
@@ -346,8 +344,24 @@
 
 	</div>
 
-	<div class="col-sm-6" style="background-color: #d80447" align="middle">
+	<div class="col-sm-6" style="background-color: #d80447; text-align: center" align="middle">
 		<h3 align="middle"> Edit Account </h3>
+		<input type="" name="" id="name" placeholder="Name" style="width: 30%">
+		<br>
+		<br>
+		<input type="" name="" id="cardNumber" placeholder="Card Number" style="width: 30%">
+		<br>
+		<br>
+		<input type="" name="" id="expiryDate" placeholder="Expiry Date" style="width: 30%">
+		<br>
+		<br>
+		<input type="" name="" id="cvv" placeholder="CVV" style="width: 30%">
+		<br>
+		<br>
+		<input type="" name="" id="mobile" placeholder="Mobile Number" style="width: 30%">
+		<br>
+		<br>
+		<button>Update</button>
 	</div>
 </div>
 </body>

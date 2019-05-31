@@ -129,7 +129,7 @@
 	        ajax.send();
 	        var json = JSON.parse(ajax.responseText);
 	        if(json.length == 0 || json == null) {
-	        	alert(json.length + " No Requests Nearby")
+	        	alert("No Requests Nearby")
 	        	return;
 	        }
 	        
@@ -162,7 +162,6 @@
 		}
 
 		function acceptRequest(id) {
-			alert(id);
 			var ajax = new XMLHttpRequest();
 	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/select/' + localStorage.getItem("pid") + "/" + id,false);
 	        ajax.send();
@@ -175,10 +174,8 @@
 		}
 
 		function checkIfAccepted(id) {
-			alert(id + "requestId");
 			var ajax = new XMLHttpRequest();
 	        ajax.open('GET', 'http://localhost:9090/main/professionals/requests/checkIfAccepted/' + localStorage.getItem("pid") + "/" + id,false);
-	        alert('http://localhost:9090/main/professionals/requests/checkIfAccepted/' + localStorage.getItem("pid") + "/" + id);
 	        ajax.send();
 	        if(ajax.responseText == -1) {
 	        	clearInterval(checkRequests);
@@ -217,10 +214,10 @@
 </div>
 <div class="row">
 	<div class="col-sm-4"></div>
-<div class="col-sm-4">
+<div class="col-sm-4" style="text-align: center;">
 			<h3 align="middle"> Job List </h3>
-			<div class=" col-sm anyClass" id="one">
-				 <table class="table table-striped" style="height: 300px; width: 30%">
+			<div class=" col-sm anyClass" id="one" align="middle" style="float: middle;">
+				 <table class="table table-striped" style="height: 300px; width: 100%">
 			 	<thead>
 			 		<tr>
 			 			<th scope="col">Distance</th>
@@ -234,13 +231,13 @@
 			 	</tbody>
 			 </table>
 			</div>
-			<div id="two" style="visibility: hidden">
-				<h1> waiting on response </h1>
+			<div id="two" style="visibility: hidden; float: middle">
+				<h1 style="text-align: center;"> waiting on response </h1>
 			</div>
 			<div id="three" style="visibility: hidden">
-				<h1> Travelling to Job </h1>
+				<h1 style="text-align: center;"> Travelling to Job </h1>
 			</div>
-			<button style="height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden;" onclick="finishJob()" id="four">Finish Job</button>
+			<button style=" height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden; display: inline-block;" onclick="finishJob()" id="four">Finish Job</button>
 		</div>
 		<div class="col-sm-4"></div>
 	</div>
