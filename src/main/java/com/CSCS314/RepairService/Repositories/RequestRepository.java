@@ -18,6 +18,11 @@ public interface RequestRepository extends CrudRepository<Requests, Integer> {
     @Query("SELECT max(r.requestId) FROM Requests r")
     public int findMax();
 
+    @Query("SELECT count(t) from Requests t")
+    int getAmounts();
+
+
+
     @Modifying
     @Transactional
     @Query("UPDATE Requests r SET r.professionalIds = :professionalIds WHERE r.requestId = :requestId")

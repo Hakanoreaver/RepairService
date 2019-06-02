@@ -5,6 +5,16 @@ public class ProfessionalRequest {
     int numProfessionals;
     double averageEarnt;
 
+    public ProfessionalRequest() {
+
+    }
+
+    public ProfessionalRequest(double averageNum, int numProfessionals, double averageEarnt) {
+        this.averageNum = averageNum;
+        this.numProfessionals = numProfessionals;
+        this.averageEarnt = averageEarnt;
+    }
+
     public double getAverageNum() {
         return averageNum;
     }

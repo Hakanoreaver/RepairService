@@ -1,7 +1,6 @@
 package com.CSCS314.RepairService;
 
-import com.CSCS314.RepairService.Models.RequestReturnProfessional;
-import com.CSCS314.RepairService.Models.TakingsRequest;
+import com.CSCS314.RepairService.Models.*;
 import com.CSCS314.RepairService.Repositories.*;
 import com.CSCS314.RepairService.Repositories.Objects.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -388,7 +387,7 @@ public class MainController {
         t.setAmount(amount);
         balanceRepository.updateBalance(balanceRepository.getBalance() - amount);
         t.setRequestId(p.getRequestId());
-        t.setStatus("Payment from us to professional");
+        t.setStatus("Outgoing");
         transactionRepository.save(t);
         long secondsSinceEpoch =  System.currentTimeMillis();
         long duration = secondsSinceEpoch - requestRepository.findById(p.getRequestId()).getDuration();
@@ -439,7 +438,7 @@ public class MainController {
         Transactions t = new Transactions();
         t.setAmount(amount);
         t.setRequestId(requestId);
-        t.setStatus("Payment from customer to us");
+        t.setStatus("Incoming");
         balanceRepository.updateBalance(balanceRepository.getBalance() + amount);
         transactionRepository.save(t);
         professionalRepository.updateRequest(requestId, professionalId);
@@ -550,16 +549,17 @@ public class MainController {
         try {
             Date startDatee = new Date(startDate.getTime());
             Date endDatee = new Date(endDate.getTime());
-            double outgoingAverage = transactionRepository.averageBetweenDates("Outgoing", startDatee, endDatee);
-            double incomingAverage = transactionRepository.averageBetweenDates("Incoming", startDatee, endDatee);
-            tr.setAverageIncoming(incomingAverage);
-            tr.setAverageOutgoing(outgoingAverage);
-            tr.setTotalIncoming(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
-            tr.setTotalOutgoing(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
-            tr.setLowestIncoming(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
-            tr.setLowestOutgoing(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
-            tr.setHighestIncoming(transactionRepository.sumBetweenDates("Incoming", startDatee, endDatee));
-            tr.setHighestOutoing(transactionRepository.sumBetweenDates("Outgoing", startDatee, endDatee));
+            HalfModel incoming = transactionRepository.calcBetweenDates("Incoming", startDatee, endDatee);
+            HalfModel outgoing = transactionRepository.calcBetweenDates("Outgoing", startDatee, endDatee);
+            tr.setAverageIncoming(incoming.getAverage());
+            tr.setAverageOutgoing(outgoing.getAverage());
+            tr.setHighestIncoming(incoming.getHighest());
+            tr.setHighestOutoing(outgoing.getHighest());
+            tr.setLowestIncoming(incoming.getLowest());
+            tr.setLowestOutgoing(outgoing.getLowest());
+            tr.setTotalIncoming(incoming.getTotal());
+            tr.setTotalOutgoing(outgoing.getTotal());
+            tr.setProfit(incoming.getTotal() - outgoing.getTotal());
         }
         catch (Exception e) {
 
@@ -576,8 +576,18 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "customerReport")
     public @ResponseBody
-    void customerReport() {
-        //TODO
+    CustomerRequest customerReport() {
+        CustomerRequest c = new CustomerRequest();
+        int total = requestRepository.getAmounts();
+        int totalC = customerRepository.findTotal();
+        c.setNumCustomers(totalC);
+        c.setAverageNumRequests(total/totalC);
+        int loyalty = customerRepository.findTotalLoyalty();
+        c.setNumLoyaltyCustomers(loyalty);
+        c.setNumNotLoyaltyCustomers(totalC - loyalty);
+        c.setAverageSpent(transactionRepository.getTotal("Incoming") / totalC);
+        return c;
+
     }
 
     /**
@@ -586,8 +596,15 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "professionalReport")
     public @ResponseBody
-    void professionalReport() {
-        //TODO
+    ProfessionalRequest professionalReport() {
+        ProfessionalRequest pr = new ProfessionalRequest();
+        int total = requestRepository.getAmounts();
+        int totalP = professionalRepository.findTotal();
+        pr.setNumProfessionals(total);
+        pr.setAverageNum(total/totalP);
+        pr.setAverageEarnt(transactionRepository.getTotal("Outgoing")/totalP);
+        return pr;
+
     }
 
     /**
@@ -598,8 +615,17 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "requestsReport/{startDate}/{endDate}")
     public @ResponseBody
-    void requestReport(@PathVariable Date startDate, @PathVariable Date endDate) {
-        //TODO
+    RequestsRequest requestReport(@PathVariable java.util.Date startDate, @PathVariable java.util.Date endDate) {
+        Date startDatee = new Date(startDate.getTime());
+        Date endDatee = new Date(endDate.getTime());
+        RequestsRequest rr = new RequestsRequest();
+        double total = transactionRepository.calcTotalBetweenDates("Incoming", startDatee, endDatee);
+        int numR = transactionRepository.calcAmountBetweenDates("Incoming", startDatee, endDatee);
+        rr.setAverage(total/numR);
+        rr.setNumRequests(numR);
+        rr.setTotal(total);
+        return rr;
+
     }
 
     /**
@@ -609,7 +635,9 @@ public class MainController {
     @GetMapping(path = "problemReport")
     public @ResponseBody
     void problemReport() {
-        //TODO
+        Date date = new Date(System.currentTimeMillis());
+        
+
     }
 
 

@@ -19,6 +19,9 @@ public interface ProfessionalRepository extends CrudRepository<Professionals, In
     @Query("SELECT p FROM Professionals p WHERE p.professionalId = :professionalId")
     public Professionals findById(@Param("professionalId") int professionalId);
 
+    @Query("SELECT count(p) FROM Professionals p")
+    public int findTotal();
+
     @Modifying
     @Transactional
     @Query("UPDATE Professionals p SET requestId = :requestId WHERE p.professionalId = :professionalId")

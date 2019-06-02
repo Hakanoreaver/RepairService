@@ -16,6 +16,11 @@ public interface CustomersRepository extends CrudRepository<Customers, Integer> 
         @Query("SELECT c FROM Customers c WHERE c.customerId = :customerId")
         public Customers findById(@Param("customerId") int customerId);
 
+        @Query("SELECT count(c) FROM Customers c")
+        public int findTotal();
+
+        @Query("SELECT count(c) FROM Customers c where c.customerType = 'Loyalty'")
+        public int findTotalLoyalty();
 
         @Modifying
         @Transactional

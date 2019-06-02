@@ -5,6 +5,16 @@ public class RequestsRequest {
     double average;
     double total;
 
+    public RequestsRequest() {
+
+    }
+
+    public RequestsRequest(int numRequests, double average, double total) {
+        this.numRequests = numRequests;
+        this.average = average;
+        this.total = total;
+    }
+
     public int getNumRequests() {
         return numRequests;
     }

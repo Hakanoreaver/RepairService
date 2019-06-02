@@ -7,6 +7,18 @@ public class CustomerRequest {
     int numNotLoyaltyCustomers;
     double averageSpent;
 
+    public CustomerRequest() {
+
+    }
+
+    public CustomerRequest(double averageNumRequests, int numCustomers, int numLoyaltyCustomers, int numNotLoyaltyCustomers, double averageSpent) {
+        this.averageNumRequests = averageNumRequests;
+        this.numCustomers = numCustomers;
+        this.numLoyaltyCustomers = numLoyaltyCustomers;
+        this.numNotLoyaltyCustomers = numNotLoyaltyCustomers;
+        this.averageSpent = averageSpent;
+    }
+
     public double getAverageNumRequests() {
         return averageNumRequests;
     }
