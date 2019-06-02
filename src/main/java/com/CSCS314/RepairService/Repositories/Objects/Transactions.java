@@ -15,20 +15,10 @@ public class Transactions {
     @Column(name = "TransactionalId", updatable = false, nullable = false)
     int TransactionalId;
     int RequestId;
-    int personId;
     Double amount;
     String status;
     Date date;
 
-    //Getters
-
-    public int getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
-    }
 
     public int getTransactionalId() {
         return TransactionalId;

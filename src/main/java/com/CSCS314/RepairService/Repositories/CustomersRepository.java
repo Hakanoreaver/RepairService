@@ -19,7 +19,7 @@ public interface CustomersRepository extends CrudRepository<Customers, Integer> 
         @Query("SELECT count(c) FROM Customers c")
         public int findTotal();
 
-        @Query("SELECT count(c) FROM Customers c where c.customerType = 'Loyalty'")
+        @Query("SELECT count(c) FROM Customers c where c.CustomerType = true")
         public int findTotalLoyalty();
 
         @Modifying

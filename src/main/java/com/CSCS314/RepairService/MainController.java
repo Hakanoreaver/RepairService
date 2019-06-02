@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -387,7 +388,8 @@ public class MainController {
         t.setAmount(amount);
         balanceRepository.updateBalance(balanceRepository.getBalance() - amount);
         t.setRequestId(p.getRequestId());
-        t.setStatus("Outgoing");
+        t.setStatus("Payment from us to professional");
+        t.setDate(new Date(System.currentTimeMillis()));
         transactionRepository.save(t);
         long secondsSinceEpoch =  System.currentTimeMillis();
         long duration = secondsSinceEpoch - requestRepository.findById(p.getRequestId()).getDuration();
@@ -438,7 +440,8 @@ public class MainController {
         Transactions t = new Transactions();
         t.setAmount(amount);
         t.setRequestId(requestId);
-        t.setStatus("Incoming");
+        t.setStatus("Payment from customer to us");
+        t.setDate(new Date(System.currentTimeMillis()));
         balanceRepository.updateBalance(balanceRepository.getBalance() + amount);
         transactionRepository.save(t);
         professionalRepository.updateRequest(requestId, professionalId);
@@ -536,25 +539,27 @@ public class MainController {
 
     /**
      * This is an API to return a takins report between two dates
-     * @param startDate
-     * @param endDate
+     * @param sd
+     * @param ed
      * @return
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "takingsReport/{startDate}/{endDate}")
+    @GetMapping(path = "takingsReport/{sd}/{ed}")
     public @ResponseBody
-    TakingsRequest takingsReport(@PathVariable java.util.Date startDate, @PathVariable java.util.Date endDate) {
+    TakingsRequest takingsReport(@PathVariable String sd, @PathVariable String ed) {
         TakingsRequest tr = new TakingsRequest();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            java.util.Date startDate = sdf.parse(sd);
+            java.util.Date endDate = sdf.parse(ed);
             Date startDatee = new Date(startDate.getTime());
             Date endDatee = new Date(endDate.getTime());
-            HalfModel incoming = transactionRepository.calcBetweenDates("Incoming", startDatee, endDatee);
-            HalfModel outgoing = transactionRepository.calcBetweenDates("Outgoing", startDatee, endDatee);
+            HalfModel incoming = transactionRepository.calcBetweenDates("Payment from customer to us", startDatee, endDatee);
+            HalfModel outgoing = transactionRepository.calcBetweenDates("Payment from us to professional", startDatee, endDatee);
             tr.setAverageIncoming(incoming.getAverage());
             tr.setAverageOutgoing(outgoing.getAverage());
             tr.setHighestIncoming(incoming.getHighest());
-            tr.setHighestOutoing(outgoing.getHighest());
+            tr.setHighestOutgoing(outgoing.getHighest());
             tr.setLowestIncoming(incoming.getLowest());
             tr.setLowestOutgoing(outgoing.getLowest());
             tr.setTotalIncoming(incoming.getTotal());
@@ -585,7 +590,7 @@ public class MainController {
         int loyalty = customerRepository.findTotalLoyalty();
         c.setNumLoyaltyCustomers(loyalty);
         c.setNumNotLoyaltyCustomers(totalC - loyalty);
-        c.setAverageSpent(transactionRepository.getTotal("Incoming") / totalC);
+        c.setAverageSpent(transactionRepository.getTotal("Payment from customer to us") / totalC);
         return c;
 
     }
@@ -602,25 +607,28 @@ public class MainController {
         int totalP = professionalRepository.findTotal();
         pr.setNumProfessionals(total);
         pr.setAverageNum(total/totalP);
-        pr.setAverageEarnt(transactionRepository.getTotal("Outgoing")/totalP);
+        pr.setAverageEarnt(transactionRepository.getTotal("Payment from us to professional")/totalP);
         return pr;
 
     }
 
     /**
      * This is an API to return a request report between two dates
-     * @param startDate
-     * @param endDate
+     * @param sd
+     * @param ed
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "requestsReport/{startDate}/{endDate}")
+    @GetMapping(path = "requestsReport/{sd}/{ed}")
     public @ResponseBody
-    RequestsRequest requestReport(@PathVariable java.util.Date startDate, @PathVariable java.util.Date endDate) {
+    RequestsRequest requestReport(@PathVariable String sd, @PathVariable String ed) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date startDate = sdf.parse(sd);
+        java.util.Date endDate = sdf.parse(ed);
         Date startDatee = new Date(startDate.getTime());
         Date endDatee = new Date(endDate.getTime());
         RequestsRequest rr = new RequestsRequest();
-        double total = transactionRepository.calcTotalBetweenDates("Incoming", startDatee, endDatee);
-        int numR = transactionRepository.calcAmountBetweenDates("Incoming", startDatee, endDatee);
+        double total = transactionRepository.calcTotalBetweenDates("Payment from customer to us", startDatee, endDatee);
+        int numR = transactionRepository.calcAmountBetweenDates("Payment from customer to us", startDatee, endDatee);
         rr.setAverage(total/numR);
         rr.setNumRequests(numR);
         rr.setTotal(total);
@@ -634,11 +642,34 @@ public class MainController {
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "problemReport")
     public @ResponseBody
-    void problemReport() {
-        Date date = new Date(System.currentTimeMillis());
+    List<Requests> problemReport() {
+        Date date = new Date(System.currentTimeMillis() - 4 * 24 * 60 * 60 * 1000);
+        return requestRepository.findProblems(date);
         
 
     }
+
+    /**
+     * This is an API to update a user
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "customer/update")
+    public @ResponseBody
+    void updateCustomer() {
+
+    }
+
+    /**
+     * This is an API to update a user
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "professional/update")
+    public @ResponseBody
+    void updateProfessional() {
+
+    }
+
+
 
 
 

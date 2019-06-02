@@ -43,7 +43,8 @@
 				case "7" : showBalance();
 				document.getElementById("button").style.visibility = "hidden";
 				break;
-				case "8" : document.getElementById("button").style.visibility = "visible"; 
+				case "8" : document.getElementById("b").onclick = function () { takingsReport() }
+				    document.getElementById("button").style.visibility = "visible";
 				break;
 				case "9" : customerReport();
 				document.getElementById("button").style.visibility = "hidden";
@@ -51,8 +52,8 @@
 				case "10" : professionalReport(); 
 				document.getElementById("button").style.visibility = "hidden";
 				break;
-				case "11" : requestReport();
-				document.getElementById("button").style.visibility = "hidden";
+				case "11" : document.getElementById("b").onclick = function () { requestReport() }
+                    document.getElementById("button").style.visibility = "visible";
 				break;
 				case "12" : issuesReport();
 				document.getElementById("button").style.visibility = "hidden";
@@ -433,30 +434,448 @@
 
 		function showTransactions() {
 			clearTable();
+
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/transactions/all',false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Transaction Id";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Request Id";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Amount";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Status";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Date";
+
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            head.appendChild(newHead);
+
+            for(var i = 0; i < json.length; i++) {
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = json[i].transactionalId;
+                var td2 = document.createElement("td");
+                td2.innerHTML = json[i].requestId;
+                var td3 = document.createElement("td");
+                td3.innerHTML = json[i].amount;
+                var td4 = document.createElement("td");
+                td4.innerHTML = json[i].status;
+                var td5 = document.createElement("td");
+                td5.innerHTML = json[i].date;
+
+
+
+                newRow.appendChild(td1);
+                newRow.appendChild(td2);
+                newRow.appendChild(td3);
+                newRow.appendChild(td4);
+                newRow.appendChild(td5);
+                rows.appendChild(newRow);
+            }
+
 		}
 
 		function showBalance() {
-			clearTable();
-		}
+            clearTable();
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/balance', false);
+            ajax.send();
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Balance";
+
+            newHead.appendChild(th1);
+            head.appendChild(newHead);
+
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = ajax.responseText;
+
+
+                newRow.appendChild(td1);
+                rows.appendChild(newRow);
+
+        }
 
 		function takingsReport() {
 			clearTable();
+			var sd = document.getElementById("sd").value;
+			var ed = document.getElementById("ed").value;
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/takingsReport/' + sd + "/" + ed, false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Total Incoming";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Total Outgoing";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Average Incoming";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Average Outgoing";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Highest Incoming";
+
+            var th6 = document.createElement("th");
+            th6.scope = "row";
+            th6.innerHTML = "Highest Outgoing";
+
+            var th7 = document.createElement("th");
+            th7.scope = "row";
+            th7.innerHTML = "Lowest Incoming";
+
+            var th8 = document.createElement("th");
+            th8.scope = "row";
+            th8.innerHTML = "Lowest Outgoing";
+
+            var th9 = document.createElement("th");
+            th9.scope = "row";
+            th9.innerHTML = "Profit";
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            newHead.appendChild(th6);
+            newHead.appendChild(th7);
+            newHead.appendChild(th8);
+            newHead.appendChild(th9);
+            head.appendChild(newHead);
+
+            var newRow = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = json.totalIncoming;
+            var td2 = document.createElement("td");
+            td2.innerHTML = json.totalOutgoing;
+            var td3 = document.createElement("td");
+            td3.innerHTML = json.averageIncoming;
+            var td4 = document.createElement("td");
+            td4.innerHTML = json.averageOutgoing;
+            var td5 = document.createElement("td");
+            td5.innerHTML = json.highestIncoming;
+            var td6 = document.createElement("td");
+            td6.innerHTML = json.highestOutgoing;
+            var td7 = document.createElement("td");
+            td7.innerHTML = json.lowestIncoming;
+            var td8 = document.createElement("td");
+            td8.innerHTML = json.lowestOutgoing;
+            var td9 = document.createElement("td");
+            td9.innerHTML = json.profit;
+
+            newRow.appendChild(td1);
+            newRow.appendChild(td2);
+            newRow.appendChild(td3);
+            newRow.appendChild(td4);
+            newRow.appendChild(td5);
+            newRow.appendChild(td6);
+            newRow.appendChild(td7);
+            newRow.appendChild(td8);
+            newRow.appendChild(td9);
+            rows.appendChild(newRow);
 		}
 
 		function customerReport() {
 			clearTable();
+            var sd = document.getElementById("sd").value;
+            var ed = document.getElementById("ed").value;
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/customerReport', false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Average Number of Requests";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Number of Customers";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Number of Loyalty Customers";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Number not Loyalty Customers";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Average Spent";
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            head.appendChild(newHead);
+
+            var newRow = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = json.averageNumRequests;
+            var td2 = document.createElement("td");
+            td2.innerHTML = json.numCustomers;
+            var td3 = document.createElement("td");
+            td3.innerHTML = json.numLoyaltyCustomers;
+            var td4 = document.createElement("td");
+            td4.innerHTML = json.numNotLoyaltyCustomers;
+            var td5 = document.createElement("td");
+            td5.innerHTML = json.averageSpent;
+            newRow.appendChild(td1);
+            newRow.appendChild(td2);
+            newRow.appendChild(td3);
+            newRow.appendChild(td4);
+            newRow.appendChild(td5);
+            rows.appendChild(newRow);
 		}
 
 		function professionalReport() {
 			clearTable();
+
+            var sd = document.getElementById("sd").value;
+            var ed = document.getElementById("ed").value;
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/professionalReport', false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Average Number of Requests";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Number of Professionals";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Average Earnt";
+
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            head.appendChild(newHead);
+
+            var newRow = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = json.averageNum;
+            var td2 = document.createElement("td");
+            td2.innerHTML = json.numProfessionals;
+            var td3 = document.createElement("td");
+            td3.innerHTML = json.averageEarnt;
+
+            newRow.appendChild(td1);
+            newRow.appendChild(td2);
+            newRow.appendChild(td3);
+            rows.appendChild(newRow);
+
 		}
 
 		function requestReport() {
 			clearTable();
+
+            var sd = document.getElementById("sd").value;
+            var ed = document.getElementById("ed").value;
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/requestsReport/' + sd + "/" + ed, false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Number of Requests";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Average";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Total";
+
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            head.appendChild(newHead);
+
+            var newRow = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = json.numRequests;
+            var td2 = document.createElement("td");
+            td2.innerHTML = json.average;
+            var td3 = document.createElement("td");
+            td3.innerHTML = json.total;
+
+            newRow.appendChild(td1);
+            newRow.appendChild(td2);
+            newRow.appendChild(td3);
+            rows.appendChild(newRow);
 		}
 
 		function issuesReport() {
 			clearTable();
+
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/problemReport',false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Request Id";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Profesional Id";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Is Accepted";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Problem";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Vehicle Id";
+
+            var th6 = document.createElement("th");
+            th6.scope = "row";
+            th6.innerHTML = "Date";
+
+            var th7 = document.createElement("th");
+            th7.scope = "row";
+            th7.innerHTML = "Is Finished";
+
+            var th8 = document.createElement("th");
+            th8.scope = "row";
+            th8.innerHTML = "Longitude";
+
+            var th9 = document.createElement("th");
+            th9.scope = "row";
+            th9.innerHTML = "Latitude";
+
+            var th10 = document.createElement("th");
+            th10.scope = "row";
+            th10.innerHTML = "Customer Id";
+
+            var th11 = document.createElement("th");
+            th11.scope = "row";
+            th11.innerHTML = "Duration";
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th10);
+            newHead.appendChild(th11);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            newHead.appendChild(th6);
+            newHead.appendChild(th7);
+            newHead.appendChild(th8);
+            newHead.appendChild(th9);
+            head.appendChild(newHead);
+
+            for(var i = 0; i < json.length; i++) {
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = json[i].requestId;
+                var td2 = document.createElement("td");
+                td2.innerHTML = json[i].professionalId;
+                var td4 = document.createElement("td");
+                td4.innerHTML = json[i].problem;
+                var td5 = document.createElement("td");
+                td5.innerHTML = json[i].vehicleId;
+                var td6 = document.createElement("td");
+                td6.innerHTML = json[i].requestDate;
+                var td7 = document.createElement("td");
+                td7.innerHTML = json[i].isFinished;
+                var td3 = document.createElement("td");
+                td3.innerHTML = json[i].accepted;
+                var td8 = document.createElement("td");
+                td8.innerHTML = json[i].longitude;
+                var td9 = document.createElement("td");
+                td9.innerHTML = json[i].latitude;
+                var td10 = document.createElement("td");
+                td10.innerHTML = json[i].customerId;
+                var td11 = document.createElement("td");
+                td11.innerHTML = json[i].duration;
+
+                newRow.appendChild(td1);
+                newRow.appendChild(td2);
+                newRow.appendChild(td10);
+                newRow.appendChild(td11);
+                newRow.appendChild(td3);
+                newRow.appendChild(td4);
+                newRow.appendChild(td5);
+                newRow.appendChild(td6);
+                newRow.appendChild(td7);
+                newRow.appendChild(td8);
+                newRow.appendChild(td9);
+                rows.appendChild(newRow);
+            }
+
 		}
 
 		function clearTable() {
@@ -494,9 +913,9 @@
 			<button onclick="selectReport()">View</button>
 			<br>
 			<div  id="button" style="visibility: hidden">
-				<input id="stardDate" type="date" placeholder="Start Date">
-				<input id="endDate" type="date" placeholder="End Date">
-				<button  onclick="takingsReport()">Generate Takings Report</button>
+				<input id="sd" type="date" placeholder="Start Date">
+				<input id="ed" type="date" placeholder="End Date">
+				<button  id="b" onclick="takingsReport()">Generate Takings Report</button>
 			</div>
 			
 		</div>

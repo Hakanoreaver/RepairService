@@ -8,7 +8,7 @@ public class TakingsRequest {
     double averageOutgoing;
     double highestIncoming;
     double lowestIncoming;
-    double highestOutoing;
+    double highestOutgoing;
     double lowestOutgoing;
 
     public double getTotalIncoming() {
@@ -67,12 +67,12 @@ public class TakingsRequest {
         this.lowestIncoming = lowestIncoming;
     }
 
-    public double getHighestOutoing() {
-        return highestOutoing;
+    public double getHighestOutgoing() {
+        return highestOutgoing;
     }
 
-    public void setHighestOutoing(double highestOutoing) {
-        this.highestOutoing = highestOutoing;
+    public void setHighestOutgoing(double highestOutgoing) {
+        this.highestOutgoing = highestOutgoing;
     }
 
     public double getLowestOutgoing() {

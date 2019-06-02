@@ -9,6 +9,9 @@ package com.CSCS314.RepairService.Repositories;
         import org.springframework.stereotype.Repository;
         import org.springframework.transaction.annotation.Transactional;
 
+        import java.sql.Date;
+        import java.util.List;
+
 @Repository
 public interface RequestRepository extends CrudRepository<Requests, Integer> {
 
@@ -21,7 +24,8 @@ public interface RequestRepository extends CrudRepository<Requests, Integer> {
     @Query("SELECT count(t) from Requests t")
     int getAmounts();
 
-
+    @Query("SELECT r FROM Requests r WHERE r.RequestDate < :date and r.Accepted = false or r.isFinished = false")
+    public List<Requests> findProblems(@Param("date") Date date);
 
     @Modifying
     @Transactional

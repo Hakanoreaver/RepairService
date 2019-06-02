@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BalanceRepository extends CrudRepository<Balance, Integer> {
-    @Query("SELECT b.balance FROM Balance b WHERE b.balanceId = 1")
+    @Query("SELECT b.balance FROM Balance b WHERE b.balanceId = 2")
     public double getBalance();
 
     @Modifying
     @Transactional
-    @Query("UPDATE Balance b SET b.balance = :balance WHERE b.balanceId = 1")
+    @Query("UPDATE Balance b SET b.balance = :balance WHERE b.balanceId = 2")
     public void updateBalance(@Param("balance") double balance);
 }
