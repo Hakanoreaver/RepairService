@@ -895,6 +895,10 @@
             ajax.open('GET', 'http://localhost:9090/main/admin/update/' + newPass + "/" + localStorage.getItem("aid") ,false);
             ajax.send();
 		}
+
+		function search() {
+		    
+		}
 	</script>
 </head>
 <body>
@@ -924,7 +928,16 @@
 				<input id="ed" type="date" placeholder="End Date">
 				<button  id="b" onclick="takingsReport()">Generate Takings Report</button>
 			</div>
-			
+			<input type="text" placeholder="Search">
+			<select id="secondColumn">
+				<option value="1">Customers</option>
+				<option value="2">Professionals</option>
+				<option value="3">Vehicles</option>
+				<option value="4">Services</option>
+				<option value="5">Requests</option>
+				<option value="6">Transactions</option>
+			</select>
+			<button style="margin-bottom: 20px" onclick="search()">Search</button>
 		</div>
 
 	</div>
@@ -939,7 +952,7 @@
 				<tbody id="rows"> 
 				</tbody>
 			</table>
-			<h3><button onclick="updatePassword()">Update Password</button></h3>
+			<h3 align="center"><button onclick="updatePassword()">Update Password</button></h3>
 		</div>
 		<div class="col-sm-3">
 		</div>

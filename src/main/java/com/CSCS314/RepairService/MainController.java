@@ -745,6 +745,16 @@ public class MainController {
     }
 
     /**
+     * This is an API to view reviews by professional id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "review/byProfessional/{professionalId}")
+    public @ResponseBody
+    List<Reviews> reviewByProfessional(@PathVariable int professionalId) {
+        return reviewRepository.findById(professionalId);
+    }
+
+    /**
      * This is an API for a customer to subscribe and pay the system
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
@@ -762,6 +772,65 @@ public class MainController {
         customerRepository.updateSubscription(true, customerId);
     }
 
+    /**
+     * This is an API to delete a customer
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "customer/delete/{customerId}")
+    public @ResponseBody
+    void deleteCustomer(@PathVariable int customerId) {
+        customerRepository.delete(customerRepository.findById(customerId));
+    }
+
+    /**
+     * This is an API to delete a professional
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "professional/delete/{professionalId}")
+    public @ResponseBody
+    void deleteProfessional(@PathVariable int professionalId) {
+        professionalRepository.delete(professionalRepository.findById(professionalId));
+    }
+
+    /**
+     * This is an API to delete a review
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "review/delete/{reviewId}")
+    public @ResponseBody
+    void deleteReview(@PathVariable int reviewId) {
+        reviewRepository.delete(reviewRepository.find(reviewId));
+    }
+
+    /**
+     * This is an API to delete a vehicle
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "vehicle/delete/{vehicleId}")
+    public @ResponseBody
+    void deleteVehicle(@PathVariable int vehicleId) {
+        vehicleRepository.delete(vehicleRepository.findById(vehicleId));
+    }
+
+    /**
+     * This is an API to delete a vehicle
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "transaction/byCustomer/{customerId}")
+    public @ResponseBody
+    List<Transactions> transactionByCustomer(@PathVariable int customerId) {
+        return transactionRepository.findByCustomerId(customerId);
+    }
+
+    /**
+     * This is an API to delete a vehicle
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "transaction/byProfessional/{professionalId}")
+    public @ResponseBody
+    List<Transactions> transactionByProfessional(@PathVariable int professionalId) {
+        return transactionRepository.findByprofessionalId(professionalId);
+    }
 
 
 

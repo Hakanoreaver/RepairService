@@ -13,6 +13,9 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<Reviews, String> {
-    @Query("SELECT r FROM Requests r WHERE r.ProfessionalId = :ProfessionalId")
+    @Query("SELECT r FROM Reviews r WHERE r.ProfessionalId = :ProfessionalId")
     public List<Reviews> findById(@Param("ProfessionalId") int ProfessionalId);
+
+    @Query("SELECT r FROM Reviews r WHERE r.ReviewId = :reviewId")
+    public Reviews find(@Param("reviewId") int reviewId);
 }

@@ -202,6 +202,14 @@
 		}
 
 		function viewHistory() {
+            var head = document.getElementById("head2");
+            while (head.firstChild) {
+                head.removeChild(head.firstChild);
+            }
+            var rows = document.getElementById("rows2");
+            while (rows.firstChild) {
+                rows.removeChild(rows.firstChild);
+            }
             var ajax = new XMLHttpRequest();
             ajax.open('GET', 'http://localhost:9090/main/requests/byProfessional/' + localStorage.getItem("pid"),false);
             ajax.send();
@@ -307,6 +315,115 @@
                 rows.appendChild(newRow);
             }
 		}
+
+		function viewReviewHistory() {
+            var head = document.getElementById("head3");
+            while (head.firstChild) {
+                head.removeChild(head.firstChild);
+            }
+            var rows = document.getElementById("rows3");
+            while (rows.firstChild) {
+                rows.removeChild(rows.firstChild);
+            }
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/review/byProfessional/' + localStorage.getItem("pid"),false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var tr = document.createElement("tr");
+            var th = document.createElement("th");
+            var th1 = document.createElement("th");
+            th.innerHTML = "Rating";
+            th1.innerHTML = "Review"
+            tr.appendChild(th);
+            tr.appendChild(th1);
+            document.getElementById("head3").appendChild(tr);
+
+            var rows = document.getElementById("rows3");
+
+            for(var i = 0; i < json.length; i++) {
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                var td1 = document.createElement("td");
+
+                td.innerHTML = json[i].rating;
+                td1.innerHTML = json[i].textString;
+                tr.appendChild(td);
+                tr.appendChild(td1);
+                rows.appendChild(tr);
+            }
+		}
+
+        function viewPaymentHistory() {
+            var head = document.getElementById("head4");
+            while (head.firstChild) {
+                head.removeChild(head.firstChild);
+            }
+            var rows = document.getElementById("rows4");
+            while (rows.firstChild) {
+                rows.removeChild(rows.firstChild);
+            }
+
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/transaction/byProfessional/' + localStorage.getItem("pid"),false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows4");
+            var head = document.getElementById("head4");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Transaction Id";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Request Id";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Amount";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Status";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Date";
+
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            head.appendChild(newHead);
+
+            for(var i = 0; i < json.length; i++) {
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = json[i].transactionalId;
+                var td2 = document.createElement("td");
+                td2.innerHTML = json[i].requestId;
+                var td3 = document.createElement("td");
+                td3.innerHTML = json[i].amount;
+                var td4 = document.createElement("td");
+                td4.innerHTML = json[i].status;
+                var td5 = document.createElement("td");
+                td5.innerHTML = json[i].date;
+
+
+
+                newRow.appendChild(td1);
+                newRow.appendChild(td2);
+                newRow.appendChild(td3);
+                newRow.appendChild(td4);
+                newRow.appendChild(td5);
+                rows.appendChild(newRow);
+            }
+        }
 	</script>
 
 </head>
@@ -357,6 +474,32 @@
 				<thead id="head2">
 				</thead>
 				<tbody id="rows2">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12" style="text-align: center; width: 100%; " align="middle">
+			<h1>View Reviews</h1>
+			<button onclick="viewReviewHistory()">View Reviews</button>
+			<table class="table table-striped" style="height: 300px; width: 100%; float: middle">
+				<thead id="head3">
+				</thead>
+				<tbody id="rows3">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12" style="text-align: center; width: 100%; " align="middle">
+			<h1>View Payments</h1>
+			<button onclick="viewPaymentHistory()">View Payments</button>
+			<table class="table table-striped" style="height: 300px; width: 100%; float: middle">
+				<thead id="head4">
+				</thead>
+				<tbody id="rows4">
 				</tbody>
 			</table>
 		</div>

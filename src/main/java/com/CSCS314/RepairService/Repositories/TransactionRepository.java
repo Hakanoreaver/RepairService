@@ -14,6 +14,8 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends CrudRepository<Transactions, String> {
+
+
     @Query("SELECT new com.CSCS314.RepairService.Models.HalfModel(sum(amount),avg(amount), max(amount), min(amount)) FROM Transactions t WHERE t.date between :startDate and :endDate and t.status = :status")
     public HalfModel calcBetweenDates(@Param("status") String status, @Param("startDate")Date startDate, @Param("endDate") Date endDate);
 
@@ -28,6 +30,12 @@ public interface TransactionRepository extends CrudRepository<Transactions, Stri
 
     @Query("SELECT sum(amount) from Transactions t")
     double  getGrandTotal();
+
+    @Query("SELECT t from Transactions t where t.RequestId in (select r.requestId from Requests r where r.CustomerId = :customerId)and t.status = 'Payment from customer to us'")
+    List<Transactions>  findByCustomerId(@Param("customerId") int customerId);
+
+    @Query("SELECT t from Transactions t where t.RequestId in (select r.requestId from Requests r where r.ProfessionalId = :professionalId) and t.status = 'Payment from us to professional'")
+    List<Transactions>  findByprofessionalId(@Param("professionalId") int professionalId);
 
 }
 
