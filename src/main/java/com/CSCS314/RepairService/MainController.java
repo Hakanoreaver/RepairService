@@ -180,12 +180,20 @@ public class MainController {
     public @ResponseBody
     void lodgeReview(@PathVariable int requestId, @PathVariable String review, @PathVariable double rating) {
         Requests temp = requestRepository.findById(requestId);
+        int professionalId = temp.getProfessionalId();
+        double total = 0;
+        double amount = 0;
         Reviews rev = new Reviews();
         rev.setCustomerId(temp.getCustomerId());
         rev.setProfessionalId(temp.getProfessionalId());
         rev.setRating(rating);
         rev.setTextString(review);
         reviewRepository.save(rev);
+        for(Reviews r : reviewRepository.findById(professionalId)) {
+            total += r.getRating();
+            amount += 1;
+        }
+        professionalRepository.updateRating(total/amount, professionalId);
 
     }
 

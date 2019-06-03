@@ -27,5 +27,10 @@ public interface ProfessionalRepository extends CrudRepository<Professionals, In
     @Query("UPDATE Professionals p SET requestId = :requestId WHERE p.professionalId = :professionalId")
     public void updateRequest(@Param("requestId") int requestId,@Param("professionalId") Integer professionalId);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Professionals p SET avRating = :avRating WHERE p.professionalId = :professionalId")
+    public void updateRating(@Param("avRating") double avRating,@Param("professionalId") Integer professionalId);
+
 }
 

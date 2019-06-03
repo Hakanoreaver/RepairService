@@ -12,7 +12,7 @@ public class Professionals {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "professionalId", updatable = false, nullable = false)
     private int professionalId;
-    private int avRating;
+    private double avRating;
     private String name;
     private String bankToken;
     private String services;
@@ -31,7 +31,7 @@ public class Professionals {
     public int getProfessionalId() {
         return professionalId;
     }
-    public int getAvRating() {return avRating;}
+    public double getAvRating() {return avRating;}
     public String getName() {
         return name;
     }
@@ -74,7 +74,7 @@ public class Professionals {
     public void setProfessionalId(int CustomerId) {
         this.professionalId = CustomerId;
     }
-    public void setAvRating(int AvRating) {
+    public void setAvRating(double AvRating) {
         this.avRating = AvRating;
     }
     public void setName(String Name) {

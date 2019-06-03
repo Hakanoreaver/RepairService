@@ -184,7 +184,7 @@
 	}
 
 	function checkProfessionals() {
-	    var append = document.getElementById("professionals");
+	    var append = document.getElementById("rows");
         while (append.firstChild) {
             append.removeChild(append.firstChild);
         }
@@ -195,15 +195,28 @@
             var json = JSON.parse(ajax.responseText);
             for(var i = 0; i <  json.length; i++) {
                 var div = document.createElement("div");
-                div.innerHTML = json[i].name + " " + json[i].avRating + " " + json[i].priceVariance;
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                var td1 = document.createElement("td");
+                var td2 = document.createElement("td");
+                var td3 = document.createElement("td");
+
+                td.innerHTML = json[i].name;
+                td1.innerHTML = json[i].avRating;
+                td2.innerHTML = json[i].priceVariance;
+
+                tr.appendChild(td);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
                 var button = document.createElement("button");
                 button.id = json[i].professionalId;
                 button.innerHTML = "Hire";
                 button.onclick = function() {
                     selectProfessional(button.id);
 				};
-                div.appendChild(button);
-                append.appendChild(div);
+                td3.appendChild(button);
+                tr.appendChild(td3);
+                document.getElementById("rows").appendChild(tr);
 			}
         }
         catch (e) {
@@ -278,9 +291,18 @@
 		</div>
 		<div id="professionalDiv" class="col-sm-4" style="background-color: #ea00f7; visibility: hidden">
 			<h3 align="middle"> Select Professional </h3>
-			<div id="professionals" class=" col-sm anyClass">
-
-			</div>
+			<table class="table table-striped" style="height: 300px; width: 100%; float: middle">
+				<thead id="head">
+				<tr>
+					<th>Name</th>
+					<th>Average Rating</th>
+					<th>Price</th>
+					<th>Select</th>
+				</tr>
+				</thead>
+				<tbody id="rows">
+				</tbody>
+			</table>
 		</div>
 		<div id="reviewDiv" class="col-sm-4" style="background-color: #00c42a; visibility: hidden">
 			<h3 align="middle"> Complete Review </h3>
