@@ -144,6 +144,19 @@ public class MainController {
     }
 
     /**
+     * Get mapping to find an Admin by ID.
+     * @param userId
+     * @return
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/find/{adminId}")
+    public @ResponseBody
+    Admin findAdmin(@PathVariable int adminId) {
+        Admin admin = adminRepository.findById(adminId);
+        return admin;
+    }
+
+    /**
      * Get mapping to find a user by ID.
      * @param userId
      * @return
@@ -661,20 +674,54 @@ public class MainController {
      * This is an API to update a user
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "customer/update")
+    @GetMapping(path = "customer/update/{customerId}/{name}/{cardToken}/{password}/{mobile}")
     public @ResponseBody
-    void updateCustomer() {
+    void updateCustomer(@PathVariable int customerId, @PathVariable String name, @PathVariable String cardToken, @PathVariable String password, @PathVariable String mobile) {
+        customerRepository.updateName(name, customerId);
+        customerRepository.updateCardAuthToken(cardToken, customerId);
+        customerRepository.updateMobileNumber(mobile, customerId);
+        customerRepository.updatePassword(password, customerId);
+    }
+
+    /**
+     * This is an API to update a professional
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "professional/update/{professionalId}")
+    public @ResponseBody
+    void updateProfessional(@PathVariable int professionalId) {
 
     }
 
     /**
-     * This is an API to update a user
+     * This is an API to remove a vehicle
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "professional/update")
+    @GetMapping(path = "vehicles/remove/{vehicleId}")
     public @ResponseBody
-    void updateProfessional() {
+    void removeVehicle(@PathVariable int vehicleId) {
+        Vehicles v = vehicleRepository.findById(vehicleId);
+        vehicleRepository.delete(v);
+    }
 
+    /**
+     * This is an API to find a customer by their Id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "customer/{customerId}")
+    public @ResponseBody
+    Customers customerByName(@PathVariable int customerId) {
+           return customerRepository.findById(customerId);
+    }
+
+    /**
+     * This is an API to update an admins password
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/update/{passwordToken}/{adminId}")
+    public @ResponseBody
+    void customerByName(@PathVariable String passwordToken, @PathVariable int adminId) {
+        adminRepository.updatePassword(passwordToken, adminId);
     }
 
 

@@ -82,10 +82,10 @@
 				alert(ajax.responseText)
 				return;
 			}
-			ajax.open('GET', 'http://localhost:9090/main/admin/find/' + ajax.responseText,false);
+			ajax.open('GET', 'http://localhost:9090/main/admin/find/' + u,false);
 			ajax.send();
 			var json = JSON.parse(ajax.responseText);
-			localStorage.setItem("id", json.professionalId);
+			localStorage.setItem("aid", json.adminId);
 			window.open("adminPage.html", "_self");
 		
 		}

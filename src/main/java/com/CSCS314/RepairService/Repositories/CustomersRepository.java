@@ -37,4 +37,8 @@ public interface CustomersRepository extends CrudRepository<Customers, Integer> 
         @Query("UPDATE Customers c SET MobileNumber = :MobileNumber WHERE c.customerId = :customerId")
         public void updateMobileNumber(@Param("MobileNumber") String MobileNumber,@Param("customerId") Integer customerId);
 
+        @Modifying
+        @Transactional
+        @Query("UPDATE Customers c SET PasswordToken = :PasswordToken WHERE c.customerId = :customerId")
+        public void updatePassword(@Param("PasswordToken") String PasswordToken,@Param("customerId") Integer customerId);
 }
