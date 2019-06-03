@@ -102,6 +102,10 @@
 	        th7.scope = "row";
 	        th7.innerHTML = "Latitude";
 
+            var th8 = document.createElement("th");
+            th8.scope = "row";
+            th8.innerHTML = "Edit";
+
 	        newHead.appendChild(th1);
 	        newHead.appendChild(th2);
 	        newHead.appendChild(th3);
@@ -109,6 +113,7 @@
 	        newHead.appendChild(th5);
 	        newHead.appendChild(th6);
 	        newHead.appendChild(th7);
+            newHead.appendChild(th8);
 	        head.appendChild(newHead);
 
 	        for(var i = 0; i < json.length; i++) {
@@ -127,6 +132,14 @@
 	        	td6.innerHTML = json[i].longitude;
 	        	var td7 = document.createElement("td");
 	        	td7.innerHTML = json[i].latitude;
+                var td8 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].customerId;
+                button.onclick = function() {
+                    edit(id);
+				}
+                td8.appendChild(button)
 
 	        	newRow.appendChild(td1);
 	        	newRow.appendChild(td2);
@@ -135,6 +148,7 @@
 	        	newRow.appendChild(td5);
 	        	newRow.appendChild(td6);
 	        	newRow.appendChild(td7);
+                newRow.appendChild(td8);
 
 	        	rows.appendChild(newRow);
 	        }
@@ -177,8 +191,12 @@
 	        th6.innerHTML = "Longitude";
 
 	        var th7 = document.createElement("th");
-	        th7.scope = "row";
-	        th7.innerHTML = "Latitude";
+            th7.scope = "row";
+            th7.innerHTML = "Latitude";
+
+            var th8 = document.createElement("th");
+            th8.scope = "row";
+            th8.innerHTML = "Edit";
 
 	        newHead.appendChild(th1);
 	        newHead.appendChild(th2);
@@ -187,6 +205,7 @@
 	        newHead.appendChild(th5);
 	        newHead.appendChild(th6);
 	        newHead.appendChild(th7);
+            newHead.appendChild(th8);
 	        head.appendChild(newHead);
 
 	        for(var i = 0; i < json.length; i++) {
@@ -205,6 +224,14 @@
 	        	td7.innerHTML = json[i].latitude;
 	        	var td3 = document.createElement("td");
 	        	td3.innerHTML = json[i].priceVariance;
+                var td12 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].professionalId;
+                button.onclick = function() {
+                    edit(id);
+                }
+                td12.appendChild(button)
 
 	        	newRow.appendChild(td1);
 	        	newRow.appendChild(td2);
@@ -213,6 +240,7 @@
 	        	newRow.appendChild(td5);
 	        	newRow.appendChild(td6);
 	        	newRow.appendChild(td7);
+                newRow.appendChild(td12);
 
 	        	rows.appendChild(newRow);
 	        }
@@ -243,8 +271,12 @@
 	        th3.innerHTML = "Make/Model";
 
 	        var th4 = document.createElement("th");
-	        th4.scope = "row";
-	        th4.innerHTML = "Year";
+            th4.scope = "row";
+            th4.innerHTML = "Year";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Edit";
 
 	 
 
@@ -252,6 +284,7 @@
 	        newHead.appendChild(th2);
 	        newHead.appendChild(th3);
 	        newHead.appendChild(th4);
+            newHead.appendChild(th5);
 	        head.appendChild(newHead);
 
 	        for(var i = 0; i < json.length; i++) {
@@ -264,11 +297,20 @@
 	        	td3.innerHTML = json[i].makeModel;
 	        	var td4 = document.createElement("td");
 	        	td4.innerHTML = json[i].year;
+                var td8 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].vehicleId;
+                button.onclick = function() {
+                    edit(id);
+                }
+                td8.appendChild(button)
 	        	
 	        	newRow.appendChild(td1);
 	        	newRow.appendChild(td2);
 	        	newRow.appendChild(td3);
 	        	newRow.appendChild(td4);
+	        	newRow.appendChild(td8)
 
 	        	rows.appendChild(newRow);
 	        }
@@ -298,11 +340,16 @@
 	        var th3 = document.createElement("th");
 	        th3.scope = "row";
 	        th3.innerHTML = "Cost";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Edit";
 	 
 
 	        newHead.appendChild(th1);
 	        newHead.appendChild(th2);
 	        newHead.appendChild(th3);
+            newHead.appendChild(th4);
 	        head.appendChild(newHead);
 
 	        for(var i = 0; i < json.length; i++) {
@@ -313,10 +360,19 @@
 	        	td2.innerHTML = json[i].name;
 	        	var td3 = document.createElement("td");
 	        	td3.innerHTML = json[i].cost;
+                var td12 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].id;
+                button.onclick = function() {
+                    edit(id);
+                }
+                td12.appendChild(button)
 	        	
 	        	newRow.appendChild(td1);
 	        	newRow.appendChild(td2);
 	        	newRow.appendChild(td3);
+	        	newRow.appendChild(td12)
 
 	        	rows.appendChild(newRow);
 	        }
@@ -379,6 +435,10 @@
 	        th11.scope = "row";
 	        th11.innerHTML = "Duration";
 
+            var th12 = document.createElement("th");
+            th12.scope = "row";
+            th12.innerHTML = "Edit";
+
 	        newHead.appendChild(th1);
 	        newHead.appendChild(th2);
 	        newHead.appendChild(th10);
@@ -390,6 +450,7 @@
 	        newHead.appendChild(th7);
 	        newHead.appendChild(th8);
 	        newHead.appendChild(th9);
+            newHead.appendChild(th12)
 	        head.appendChild(newHead);
 
 	        for(var i = 0; i < json.length; i++) {
@@ -416,6 +477,14 @@
 	        	td10.innerHTML = json[i].customerId;
 	        	var td11 = document.createElement("td");
 	        	td11.innerHTML = json[i].duration;
+                var td12 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].requestId;
+                button.onclick = function() {
+                    edit(id);
+                }
+                td12.appendChild(button)
 
 	        	newRow.appendChild(td1);
 	        	newRow.appendChild(td2);
@@ -428,6 +497,7 @@
 	        	newRow.appendChild(td7);
 	        	newRow.appendChild(td8);
 	        	newRow.appendChild(td9);
+                newRow.appendChild(td12);
 	        	rows.appendChild(newRow);
 	        }
 		}
@@ -464,12 +534,17 @@
             th5.scope = "row";
             th5.innerHTML = "Date";
 
+            var th6 = document.createElement("th");
+            th6.scope = "row";
+            th6.innerHTML = "Edit";
+
 
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
             newHead.appendChild(th4);
             newHead.appendChild(th5);
+            newHead.appendChild(th6);
             head.appendChild(newHead);
 
             for(var i = 0; i < json.length; i++) {
@@ -484,6 +559,15 @@
                 td4.innerHTML = json[i].status;
                 var td5 = document.createElement("td");
                 td5.innerHTML = json[i].date;
+                var td12 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                var id = json[i].transactionalId;
+                button.onclick = function() {
+                    edit(id);
+                }
+                td12.appendChild(button)
+
 
 
 
@@ -492,6 +576,7 @@
                 newRow.appendChild(td3);
                 newRow.appendChild(td4);
                 newRow.appendChild(td5);
+                newRow.appendChild(td12)
                 rows.appendChild(newRow);
             }
 
@@ -897,7 +982,11 @@
 		}
 
 		function search() {
-		    
+
+		}
+
+		function edit(id) {
+
 		}
 	</script>
 </head>
