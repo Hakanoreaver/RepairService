@@ -846,7 +846,7 @@ public class MainController {
      * This is an API to find a transaction by id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "transaction/byId/{requestId}")
+    @GetMapping(path = "transaction/byId/{transactionId}")
     public @ResponseBody
     Transactions transactionById(@PathVariable int transactionId) {
         return transactionRepository.findById(transactionId);
@@ -856,7 +856,7 @@ public class MainController {
      * This is an API to find a vehicle by id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "vehicle/byId/{requestId}")
+    @GetMapping(path = "vehicle/byId/{vehicleId}")
     public @ResponseBody
     Vehicles vehicleById(@PathVariable int vehicleId) {
         return vehicleRepository.findById(vehicleId);
@@ -866,7 +866,7 @@ public class MainController {
      * This is an API to find a vehicle by id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "vehicle/byId/{serviceId}")
+    @GetMapping(path = "service/byId/{serviceId}")
     public @ResponseBody
     Services serviceById(@PathVariable int serviceId) {
         return serviceRepository.findById(serviceId);
