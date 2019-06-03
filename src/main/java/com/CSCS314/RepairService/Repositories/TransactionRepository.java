@@ -28,6 +28,9 @@ public interface TransactionRepository extends CrudRepository<Transactions, Stri
     @Query("SELECT sum(amount) from Transactions t where t.status = :status")
     double  getTotal(@Param("status") String status);
 
+    @Query("SELECT t from Transactions t where t.TransactionalId = :transactionalId")
+    Transactions  findById(@Param("transactionalId") int transactionalId);
+
     @Query("SELECT sum(amount) from Transactions t")
     double  getGrandTotal();
 

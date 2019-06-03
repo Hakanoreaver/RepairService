@@ -227,7 +227,7 @@ public class MainController {
     public @ResponseBody
     boolean createProfessional(String email, String name, String bankToken, String mobileNumber, String passwordToken, String ABN, String certificationNumber, double priceVariance) {
         Professionals check = professionalRepository.findByEmail(email);
-        if(check == null) {
+        if(check != null) {
             return false;
         }
         Professionals p = new Professionals();
@@ -831,6 +831,49 @@ public class MainController {
     List<Transactions> transactionByProfessional(@PathVariable int professionalId) {
         return transactionRepository.findByprofessionalId(professionalId);
     }
+
+    /**
+     * This is an API to find a request by id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "requests/byId/{requestId}")
+    public @ResponseBody
+    Requests requestById(@PathVariable int requestId) {
+        return requestRepository.findById(requestId);
+    }
+
+    /**
+     * This is an API to find a transaction by id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "transaction/byId/{requestId}")
+    public @ResponseBody
+    Transactions transactionById(@PathVariable int transactionId) {
+        return transactionRepository.findById(transactionId);
+    }
+
+    /**
+     * This is an API to find a vehicle by id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "vehicle/byId/{requestId}")
+    public @ResponseBody
+    Vehicles vehicleById(@PathVariable int vehicleId) {
+        return vehicleRepository.findById(vehicleId);
+    }
+
+    /**
+     * This is an API to find a vehicle by id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "vehicle/byId/{serviceId}")
+    public @ResponseBody
+    Services serviceById(@PathVariable int serviceId) {
+        return serviceRepository.findById(serviceId);
+    }
+
+
+
 
 
 
