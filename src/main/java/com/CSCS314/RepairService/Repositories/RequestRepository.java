@@ -18,6 +18,12 @@ public interface RequestRepository extends CrudRepository<Requests, Integer> {
     @Query("SELECT r FROM Requests r WHERE r.requestId = :requestId")
     public Requests findById(@Param("requestId") int requestId);
 
+    @Query("SELECT r FROM Requests r WHERE r.CustomerId = :customerId")
+    public List<Requests> findByUser(@Param("customerId") int customerId);
+
+    @Query("SELECT r FROM Requests r WHERE r.ProfessionalId = :professionalId")
+    public List<Requests> findByProfessional(@Param("professionalId") int professionalId);
+
     @Query("SELECT max(r.requestId) FROM Requests r")
     public int findMax();
 

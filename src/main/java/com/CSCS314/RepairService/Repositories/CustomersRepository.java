@@ -8,6 +8,8 @@ package com.CSCS314.RepairService.Repositories;
         import org.springframework.stereotype.Repository;
         import org.springframework.transaction.annotation.Transactional;
 
+        import java.sql.Date;
+
 @Repository
 public interface CustomersRepository extends CrudRepository<Customers, Integer> {
         @Query("SELECT c FROM Customers c WHERE c.Email = :Email")
@@ -41,4 +43,14 @@ public interface CustomersRepository extends CrudRepository<Customers, Integer> 
         @Transactional
         @Query("UPDATE Customers c SET PasswordToken = :PasswordToken WHERE c.customerId = :customerId")
         public void updatePassword(@Param("PasswordToken") String PasswordToken,@Param("customerId") Integer customerId);
+
+        @Modifying
+        @Transactional
+        @Query("UPDATE Customers c SET CustomerType = :subscription WHERE c.customerId = :customerId")
+        public void updateSubscription(@Param("subscription") boolean subscription,@Param("customerId") Integer customerId);
+
+        @Modifying
+        @Transactional
+        @Query("UPDATE Customers c SET SubscriptionDate = :subDate WHERE c.customerId = :customerId")
+        public void updateSubDate(@Param("subDate") Date subDate, @Param("customerId") Integer customerId);
 }

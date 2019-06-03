@@ -200,6 +200,113 @@
 	        ajax.send();
 	        location.reload();
 		}
+
+		function viewHistory() {
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/requests/byProfessional/' + localStorage.getItem("pid"),false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows2");
+            var head = document.getElementById("head2");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Request Id";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Professional Id";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Is Accepted";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Problem";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Vehicle Id";
+
+            var th6 = document.createElement("th");
+            th6.scope = "row";
+            th6.innerHTML = "Date";
+
+            var th7 = document.createElement("th");
+            th7.scope = "row";
+            th7.innerHTML = "Is Finished";
+
+            var th8 = document.createElement("th");
+            th8.scope = "row";
+            th8.innerHTML = "Longitude";
+
+            var th9 = document.createElement("th");
+            th9.scope = "row";
+            th9.innerHTML = "Latitude";
+
+            var th10 = document.createElement("th");
+            th10.scope = "row";
+            th10.innerHTML = "Customer Id";
+
+            var th11 = document.createElement("th");
+            th11.scope = "row";
+            th11.innerHTML = "Duration";
+
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th10);
+            newHead.appendChild(th11);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th5);
+            newHead.appendChild(th6);
+            newHead.appendChild(th7);
+            newHead.appendChild(th8);
+            newHead.appendChild(th9);
+            head.appendChild(newHead);
+
+            for(var i = 0; i < json.length; i++) {
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = json[i].requestId;
+                var td2 = document.createElement("td");
+                td2.innerHTML = json[i].professionalId;
+                var td4 = document.createElement("td");
+                td4.innerHTML = json[i].problem;
+                var td5 = document.createElement("td");
+                td5.innerHTML = json[i].vehicleId;
+                var td6 = document.createElement("td");
+                td6.innerHTML = json[i].requestDate;
+                var td7 = document.createElement("td");
+                td7.innerHTML = json[i].isFinished;
+                var td3 = document.createElement("td");
+                td3.innerHTML = json[i].accepted;
+                var td8 = document.createElement("td");
+                td8.innerHTML = json[i].longitude;
+                var td9 = document.createElement("td");
+                td9.innerHTML = json[i].latitude;
+                var td10 = document.createElement("td");
+                td10.innerHTML = json[i].customerId;
+                var td11 = document.createElement("td");
+                td11.innerHTML = json[i].duration;
+
+                newRow.appendChild(td1);
+                newRow.appendChild(td2);
+                newRow.appendChild(td10);
+                newRow.appendChild(td11);
+                newRow.appendChild(td3);
+                newRow.appendChild(td4);
+                newRow.appendChild(td5);
+                newRow.appendChild(td6);
+                newRow.appendChild(td7);
+                newRow.appendChild(td8);
+                newRow.appendChild(td9);
+                rows.appendChild(newRow);
+            }
+		}
 	</script>
 
 </head>
@@ -240,6 +347,19 @@
 			<button style=" height: 100px; width: 400px; float: middle; border-radius: 20px; visibility: hidden; display: inline-block;" onclick="finishJob()" id="four">Finish Job</button>
 		</div>
 		<div class="col-sm-4"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12" style="text-align: center; width: 100%; " align="middle">
+			<h1>View History</h1>
+			<button onclick="viewHistory()">View</button>
+			<table class="table table-striped" style="height: 300px; width: 100%; float: middle">
+				<thead id="head2">
+				</thead>
+				<tbody id="rows2">
+				</tbody>
+			</table>
+		</div>
 	</div>
 </body>
 </html>

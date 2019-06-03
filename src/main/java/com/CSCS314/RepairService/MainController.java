@@ -145,7 +145,7 @@ public class MainController {
 
     /**
      * Get mapping to find an Admin by ID.
-     * @param userId
+     * @param adminId
      * @return
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
@@ -723,6 +723,46 @@ public class MainController {
     void customerByName(@PathVariable String passwordToken, @PathVariable int adminId) {
         adminRepository.updatePassword(passwordToken, adminId);
     }
+
+    /**
+     * This is an API to view requests by userId
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "requests/byUser/{userId}")
+    public @ResponseBody
+    List<Requests> requestsByUser(@PathVariable int userId) {
+        return requestRepository.findByUser(userId);
+    }
+
+    /**
+     * This is an API to view requests by professional id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "requests/byProfessional/{professionalId}")
+    public @ResponseBody
+    List<Requests> requestsByProfessional(@PathVariable int professionalId) {
+        return requestRepository.findByProfessional(professionalId);
+    }
+
+    /**
+     * This is an API for a customer to subscribe and pay the system
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "subscribe/{customerId}")
+    public @ResponseBody
+    void customerSubscribe(@PathVariable int customerId) {
+        Transactions t = new Transactions();
+        t.setAmount(30.00);
+        t.setRequestId(-1);
+        t.setStatus("Payment from customer to us");
+        t.setDate(new Date(System.currentTimeMillis()));
+        transactionRepository.save(t);
+
+        customerRepository.updateSubDate(new Date(System.currentTimeMillis()), customerId);
+        customerRepository.updateSubscription(true, customerId);
+    }
+
+
 
 
 
