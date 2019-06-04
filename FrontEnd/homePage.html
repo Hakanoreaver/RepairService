@@ -628,7 +628,7 @@
 </script>
 </head>
 
-<body onload="loadWindow()">
+<body onload="loadWindow()" style="background-color: #add8e6">
 	<div id="header" class="row" style="background-color: #4286f4"> 
 		<div id="header" class="col-sm-6">
 			<h3 id="usernameField" align="left" style="display: inline">Username</h3>
@@ -640,7 +640,7 @@
 		</div>
 	</div>
 	<div id="lodgeDiv" class="row" style="height: 400px">
-		<div class="col-sm-4" style="background-color: #0cffd6" align="middle">
+		<div class="col-sm-4" style="align=middle;  border: 1px"">
 			<h3 align="middle" name="firstColumn"> Lodge Issue </h3>
 			<div style="height: 80px" name="firstColumn"></div>
 			Select Issue 
@@ -659,7 +659,7 @@
 			<button class="myButton" name="firstColumn" onclick="removeVehicle()">Remove Vehicle</button>
 			<button class="myButton" name="firstColumn" onclick="editVehicle()">Edit Vehicle</button>
 		</div>
-		<div id="professionalDiv" class="col-sm-4" style="background-color: #ea00f7; visibility: hidden">
+		<div id="professionalDiv" class="col-sm-4" style="visibility: hidden">
 			<h3 align="middle"> Select Professional </h3>
 			<table class="table table-striped" style="height: 300px; width: 100%; float: middle">
 				<thead id="head">
@@ -674,7 +674,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div id="reviewDiv" class="col-sm-4" style="background-color: #00c42a; visibility: hidden">
+		<div id="reviewDiv" class="col-sm-4" style="visibility: hidden; border: 1px">
 			<h3 align="middle"> Complete Review </h3>
 			<div style="height: 40px" id="firstColumn"></div>
 			<div class="col-sm">
@@ -698,7 +698,7 @@
 		</div>
 	</div>
 	<div id="secondRow" class="row" style="height: 400px">
-		<div class="col-sm-6" style="background-color: #f9f10c">
+		<div class="col-sm-6" style="background-color: #468ccf">
 			<h3 align="middle"> Add Vehicle </h3>
 
 			<div class="row">
@@ -736,7 +736,7 @@
 
 	</div>
 
-	<div class="col-sm-6" style="background-color: #d80447; text-align: center" align="middle">
+	<div class="col-sm-6" style=" text-align: center; background-color: #468ccf" align="middle">
 		<h3 align="middle"> Edit Account </h3>
 		<input type="" name="" id="name" placeholder="Name" style="width: 30%">
 		<br>
