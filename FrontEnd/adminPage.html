@@ -124,6 +124,7 @@
             th8.scope = "row";
             th8.innerHTML = "Edit";
 
+            newHead.appendChild(th8);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
@@ -131,7 +132,6 @@
             newHead.appendChild(th5);
             newHead.appendChild(th6);
             newHead.appendChild(th7);
-            newHead.appendChild(th8);
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -155,10 +155,12 @@
                 button.innerHTML = "Edit";
                 var id = json[i].customerId;
                 button.onclick = function () {
-                    edit(id);
+                    localStorage.setItem("cEdit", id);
+                    window.open("EditPages/EditCustomer.html", "_self");
                 }
                 td8.appendChild(button)
 
+                newRow.appendChild(td8);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
@@ -166,7 +168,6 @@
                 newRow.appendChild(td5);
                 newRow.appendChild(td6);
                 newRow.appendChild(td7);
-                newRow.appendChild(td8);
 
                 rows.appendChild(newRow);
             }
@@ -216,6 +217,7 @@
             th8.scope = "row";
             th8.innerHTML = "Edit";
 
+            newHead.appendChild(th8);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
@@ -223,7 +225,7 @@
             newHead.appendChild(th5);
             newHead.appendChild(th6);
             newHead.appendChild(th7);
-            newHead.appendChild(th8);
+
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -246,11 +248,14 @@
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
                 var id = json[i].professionalId;
+                var id = json[i].customerId;
                 button.onclick = function () {
-                    edit(id);
+                    localStorage.setItem("pEdit", id);
+                    window.open("EditPages/EditProfessional.html", "_self");
                 }
                 td12.appendChild(button)
 
+                newRow.appendChild(td12);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
@@ -258,7 +263,7 @@
                 newRow.appendChild(td5);
                 newRow.appendChild(td6);
                 newRow.appendChild(td7);
-                newRow.appendChild(td12);
+
 
                 rows.appendChild(newRow);
             }
@@ -296,12 +301,12 @@
             th5.scope = "row";
             th5.innerHTML = "Edit";
 
-
+            newHead.appendChild(th5);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
             newHead.appendChild(th4);
-            newHead.appendChild(th5);
+
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -323,11 +328,12 @@
                 }
                 td8.appendChild(button)
 
+                newRow.appendChild(td8);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
                 newRow.appendChild(td4);
-                newRow.appendChild(td8)
+
 
                 rows.appendChild(newRow);
             }
@@ -362,11 +368,11 @@
             th4.scope = "row";
             th4.innerHTML = "Edit";
 
-
+            newHead.appendChild(th4);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
-            newHead.appendChild(th4);
+
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -380,16 +386,18 @@
                 var td12 = document.createElement("td");
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
-                var id = json[i].id;
+                var id = json[i].customerId;
                 button.onclick = function () {
-                    edit(id);
+                    localStorage.setItem("sEdit", id);
+                    window.open("EditPages/EditServices.html", "_self");
                 }
-                td12.appendChild(button)
+                td12.appendChild(button);
 
+                newRow.appendChild(td12);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
-                newRow.appendChild(td12)
+
 
                 rows.appendChild(newRow);
             }
@@ -456,6 +464,7 @@
             th12.scope = "row";
             th12.innerHTML = "Edit";
 
+            newHead.appendChild(th12);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th10);
@@ -467,7 +476,7 @@
             newHead.appendChild(th7);
             newHead.appendChild(th8);
             newHead.appendChild(th9);
-            newHead.appendChild(th12)
+
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -503,6 +512,7 @@
                 }
                 td12.appendChild(button)
 
+                newRow.appendChild(td12);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td10);
@@ -514,7 +524,7 @@
                 newRow.appendChild(td7);
                 newRow.appendChild(td8);
                 newRow.appendChild(td9);
-                newRow.appendChild(td12);
+
                 rows.appendChild(newRow);
             }
         }
@@ -555,13 +565,13 @@
             th6.scope = "row";
             th6.innerHTML = "Edit";
 
-
+            newHead.appendChild(th6);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
             newHead.appendChild(th4);
             newHead.appendChild(th5);
-            newHead.appendChild(th6);
+
             head.appendChild(newHead);
 
             for (var i = 0; i < json.length; i++) {
@@ -585,13 +595,13 @@
                 }
                 td12.appendChild(button)
 
-
+                newRow.appendChild(td12);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
                 newRow.appendChild(td4);
                 newRow.appendChild(td5);
-                newRow.appendChild(td12)
+
                 rows.appendChild(newRow);
             }
 
@@ -1041,7 +1051,7 @@
                     var th8 = document.createElement("th");
                     th8.scope = "row";
                     th8.innerHTML = "Edit";
-
+                    newHead.appendChild(th8);
                     newHead.appendChild(th1);
                     newHead.appendChild(th2);
                     newHead.appendChild(th3);
@@ -1049,7 +1059,7 @@
                     newHead.appendChild(th5);
                     newHead.appendChild(th6);
                     newHead.appendChild(th7);
-                    newHead.appendChild(th8);
+
                     head.appendChild(newHead);
                     var json = JSON.parse(ajax.responseText);
                     var newRow = document.createElement("tr");
@@ -1075,7 +1085,7 @@
                         edit(id);
                     }
                     td8.appendChild(button)
-
+                    newRow.appendChild(td8);
                     newRow.appendChild(td1);
                     newRow.appendChild(td2);
                     newRow.appendChild(td3);
@@ -1083,7 +1093,7 @@
                     newRow.appendChild(td5);
                     newRow.appendChild(td6);
                     newRow.appendChild(td7);
-                    newRow.appendChild(td8);
+
 
                     rows.appendChild(newRow);
                     break;
@@ -1128,7 +1138,7 @@
                     var th8 = document.createElement("th");
                     th8.scope = "row";
                     th8.innerHTML = "Edit";
-
+                    newHead.appendChild(th8);
                     newHead.appendChild(th1);
                     newHead.appendChild(th2);
                     newHead.appendChild(th3);
@@ -1136,7 +1146,7 @@
                     newHead.appendChild(th5);
                     newHead.appendChild(th6);
                     newHead.appendChild(th7);
-                    newHead.appendChild(th8);
+
                     head.appendChild(newHead);
 
                     var newRow = document.createElement("tr");
@@ -1162,7 +1172,7 @@
                         edit(id);
                     }
                     td12.appendChild(button)
-
+                    newRow.appendChild(td12);
                     newRow.appendChild(td1);
                     newRow.appendChild(td2);
                     newRow.appendChild(td3);
@@ -1170,7 +1180,7 @@
                     newRow.appendChild(td5);
                     newRow.appendChild(td6);
                     newRow.appendChild(td7);
-                    newRow.appendChild(td12);
+
 
                     rows.appendChild(newRow);
 
@@ -1206,12 +1216,12 @@
                     th5.scope = "row";
                     th5.innerHTML = "Edit";
 
-
+                    newHead.appendChild(th5);
                     newHead.appendChild(th1);
                     newHead.appendChild(th2);
                     newHead.appendChild(th3);
                     newHead.appendChild(th4);
-                    newHead.appendChild(th5);
+
                     head.appendChild(newHead);
 
                         var newRow = document.createElement("tr");
@@ -1231,12 +1241,12 @@
                             edit(id);
                         }
                         td8.appendChild(button)
-
+                        newRow.appendChild(td8);
                         newRow.appendChild(td1);
                         newRow.appendChild(td2);
                         newRow.appendChild(td3);
                         newRow.appendChild(td4);
-                        newRow.appendChild(td8)
+
 
                         rows.appendChild(newRow);
 
@@ -1268,11 +1278,11 @@
                     th4.scope = "row";
                     th4.innerHTML = "Edit";
 
-
+                    newHead.appendChild(th4);
                     newHead.appendChild(th1);
                     newHead.appendChild(th2);
                     newHead.appendChild(th3);
-                    newHead.appendChild(th4);
+
                     head.appendChild(newHead);
 
                         var newRow = document.createElement("tr");
@@ -1290,11 +1300,11 @@
                             edit(id);
                         }
                         td12.appendChild(button)
-
+                         newRow.appendChild(td12);
                         newRow.appendChild(td1);
                         newRow.appendChild(td2);
                         newRow.appendChild(td3);
-                        newRow.appendChild(td12)
+
 
                         rows.appendChild(newRow);
 

@@ -783,6 +783,16 @@ public class MainController {
     }
 
     /**
+     * This is an API to delete a service
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "service/delete/{serviceId}")
+    public @ResponseBody
+    void deleteService(@PathVariable int serviceId) {
+        serviceRepository.delete(serviceRepository.findById(serviceId));
+    }
+
+    /**
      * This is an API to delete a professional
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
@@ -813,7 +823,7 @@ public class MainController {
     }
 
     /**
-     * This is an API to delete a vehicle
+     * This is an API to find transactions by customer id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "transaction/byCustomer/{customerId}")
@@ -823,7 +833,7 @@ public class MainController {
     }
 
     /**
-     * This is an API to delete a vehicle
+     * This is an api to find transactions by professional id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "transaction/byProfessional/{professionalId}")

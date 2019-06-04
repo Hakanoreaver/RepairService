@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Customer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script>
+        function load() {
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/user/find/' + localStorage.getItem("cEdit"), false);
+            ajax.send();
+            json = JSON.parse(ajax.responseText);
+            document.getElementById("name").value = json.name;
+            document.getElementById("customerType").value = json.customerType;
+            document.getElementById("cardToken").value = json.cardAuthToken;
+            document.getElementById("subscriptionDate").value = json.subscriptionDate;
+            document.getElementById("email").value = json.email;
+            document.getElementById("mobileNumber").value = json.mobileNumber;
+            document.getElementById("passwordToken").value = json.passwordToken;
+        }
+
+        function edit() {
+
+        }
+
+        function delet() {
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/customer/delete/' + localStorage.getItem("cEdit"), false);
+            ajax.send();
+        }
+    </script>
+</head>
+<body style="background-color: #add8e6" onload="load()">
+<div class="row">
+    <div class="col-sm" align="middle">
+        <h1>Edit Customer</h1>
+        <br>
+        Name<input type="text" placeholder="Name" style="display: block; width: 40%" id="name">
+        <br>
+        Customer Type<input type="text" placeholder="Customer Type" style="display: block; width: 40%" id="customerType">
+        <br>
+        Card Token<input type="text" placeholder="Card Token" style="display: block; width: 40%" id="cardToken">
+        <br>
+        Subscription Date<input type="date" placeholder="Subscription Date" style="display: block; width: 40%" id="subscriptionDate">
+        <br>
+        Email<input type="text" placeholder="Email" style="display: block; width: 40%" id="email">
+        <br>
+        Mobile Number<input type="text" placeholder="Mobile Number" style="display: block; width: 40%" id="mobileNumber">
+        <br>
+        Password Token<input type="text" placeholder="Password Token" style="display: block; width: 40%" id="passwordToken">
+        <br>
+        <button style="margin: 20px" onclick="edit()">Submit Edit</button>
+        <br>
+        <button style="margin: 20px" onclick="delet()">Delete</button>
+    </div>
+</div>
+</body>
+</html>
