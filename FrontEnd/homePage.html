@@ -226,6 +226,7 @@
         document.getElementById("name").value = json.name;
         document.getElementById("mobile").value = json.mobileNumber;
         document.getElementById("password").value = json.passwordToken;
+        document.getElementById("email").value = json.email;
 
         if(json.customerType == true) {
             document.getElementById("subscription").innerHTML = "Subscribed";
@@ -343,9 +344,10 @@
         var cvv = document.getElementById("cvv").value;
         var mobile = document.getElementById("mobile").value;
         var password = document.getElementById("password").value;
+        var email = document.getElementById("email").value;
 
         var ajax = new XMLHttpRequest();
-        ajax.open('GET', 'http://localhost:9090/main/customer/update/' + localStorage.getItem("id") + "/" + name + "/" + cardNumber + expiryDate + cvv + "/" + password + "/" + mobile, false);
+        ajax.open('GET', 'http://localhost:9090/main/customer/update/' + localStorage.getItem("id") + "/" + name + "/" + cardNumber + expiryDate + cvv + "/" + password + "/" + mobile + "/" + email, false);
         ajax.send();
 
         document.getElementById("usernameField").innerHTML = name;
@@ -625,6 +627,10 @@
         localStorage.setItem("vEdit", carId);
         window.open("EditPages/EditVehicle.html");
 	}
+
+	function logOut() {
+        window.open("main.html", "_self");
+	}
 </script>
 </head>
 
@@ -636,7 +642,7 @@
 			<button style="visibility: hidden" onclick="subscribe()" id="subButton">Subscribe</button>
 		</div>
 		<div id="header" class="col-sm-6" align="right">
-			<button align="right" class="myButton">Log Out</button>
+			<button align="right" class="myButton" onclick="logOut()">Log Out</button>
 		</div>
 	</div>
 	<div id="lodgeDiv" class="row" style="height: 400px">
@@ -736,25 +742,21 @@
 
 	</div>
 
-	<div class="col-sm-6" style=" text-align: center; background-color: #468ccf" align="middle">
+	<div class="col-sm-6" style=" text-align: center; background-color: #468ccf; height: 400px" align="middle">
 		<h3 align="middle"> Edit Account </h3>
-		<input type="" name="" id="name" placeholder="Name" style="width: 30%">
+		<input type="text" name="" id="name" placeholder="Name" style="width: 30%">
 		<br>
+		<input type="number" name="" id="cardNumber" placeholder="Card Number" style="width: 30%">
 		<br>
-		<input type="" name="" id="cardNumber" placeholder="Card Number" style="width: 30%">
+		<input type="date" name="" id="expiryDate" placeholder="Expiry Date" style="width: 30%">
 		<br>
+		<input type="number" name="" id="cvv" placeholder="CVV" style="width: 30%">
 		<br>
-		<input type="" name="" id="expiryDate" placeholder="Expiry Date" style="width: 30%">
+		<input type="text" name="" id="mobile" placeholder="Mobile Number" style="width: 30%">
 		<br>
+		<input type="text" name="" id="password" placeholder="Password" style="width: 30%">
 		<br>
-		<input type="" name="" id="cvv" placeholder="CVV" style="width: 30%">
-		<br>
-		<br>
-		<input type="" name="" id="mobile" placeholder="Mobile Number" style="width: 30%">
-		<br>
-		<br>
-		<input type="" name="" id="password" placeholder="Password" style="width: 30%">
-		<br>
+		<input type="text" name="" id="email" placeholder="Email" style="width: 30%">
 		<br>
 		<button onclick="editAccount()">Update</button>
 	</div>

@@ -685,13 +685,14 @@ public class MainController {
      * This is an API to update a user
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "customer/update/{customerId}/{name}/{cardToken}/{password}/{mobile}")
+    @GetMapping(path = "customer/update/{customerId}/{name}/{cardToken}/{password}/{mobile}/{email}")
     public @ResponseBody
-    void updateCustomer(@PathVariable int customerId, @PathVariable String name, @PathVariable String cardToken, @PathVariable String password, @PathVariable String mobile) {
+    void updateCustomer(@PathVariable int customerId, @PathVariable String name, @PathVariable String cardToken, @PathVariable String password, @PathVariable String mobile, @PathVariable String email) {
         customerRepository.updateName(name, customerId);
         customerRepository.updateCardAuthToken(cardToken, customerId);
         customerRepository.updateMobileNumber(mobile, customerId);
         customerRepository.updatePassword(password, customerId);
+        customerRepository.updateEmail(email, customerId);
     }
 
     /**

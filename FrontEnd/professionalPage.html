@@ -429,12 +429,19 @@
 		    localStorage.setItem("pEdit", localStorage.getItem("pid"));
             window.open("EditPages/EditProfessional.html");
 		}
+
+        function logOut() {
+            window.open("main.html", "_self");
+        }
 	</script>
 
 </head>
 <body style="background-color: #add8e6">
-	<div id="header" class="row" align="right" style="height: 70px">
-		<button onclick="edit()" style="border-radius: 20px;">editAccount</button>
+	<div id="header" class="row" align="right" style="height: 40px">
+		<div class="col-sm-12">
+			<button onclick="edit()" style="border-radius: 20px; float: left">Edit Account</button>
+			<button style="float: right" align="right" class="myButton" onclick="logOut()">Log Out</button>
+		</div>
 	</div>
 </div>
 <div id="header" class="row" align="centre" style="height: 100px"> 
