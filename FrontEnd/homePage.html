@@ -172,6 +172,9 @@
 </style>
 
 <script type="text/javascript">
+
+	var cost;
+
     function ValidateForm()
     {
         var objects = document.getElementsByName("firstColumn");
@@ -203,6 +206,7 @@
         for(var i = 0; i < json.length; i++) {
             var input = document.createElement("option");
             input.value = json[i].vehicleId;
+            input.id = json[i].cost;
             input.innerHTML = json[i].numberPlate + " - " + json[i].makeModel + " - " + json[i].year;
             selector.appendChild(input);
         }
@@ -255,6 +259,7 @@
 		var issueId = e.options[e.selectedIndex].value;
         e = document.getElementById("cars");
         var carId = e.options[e.selectedIndex].value;
+        cost = e.options[e.selectedIndex].id
 		var longitude = 0;
 		var latitude = 0;
         var ajax = new XMLHttpRequest();
@@ -298,7 +303,7 @@
 
                 td.innerHTML = json[i].name;
                 td1.innerHTML = json[i].avRating;
-                td2.innerHTML = json[i].priceVariance;
+                td2.innerHTML = (json[i].priceVariance + 1) * cost;
 
                 tr.appendChild(td);
                 tr.appendChild(td1);
