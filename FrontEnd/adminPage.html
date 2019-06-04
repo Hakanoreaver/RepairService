@@ -1570,9 +1570,22 @@
         function edit(id) {
 
         }
+
+        function createAdmin() {
+            var password =  prompt("Enter Password", "Password");
+            var ajax = new XMLHttpRequest();
+            ajax.open('POST', 'http://localhost:9090/main/admin/create/' + password, false);
+            ajax.send();
+            alert("New Admin id is " + ajax.responseText);
+        }
     </script>
 </head>
 <body style="background-color: #add8e6">
+<div id="header" class="row" align="right" style="height: 40px">
+    <div class="col-sm-12">
+        <button onclick="createAdmin()" style="border-radius: 20px; float: left">Create Admin</button>
+    </div>
+</div>
 <h1 align="middle" style="margin: 50px"> Admin Console </h1>
 <div class="row">
     <div class="col-sm" style="float: middle" align="middle">

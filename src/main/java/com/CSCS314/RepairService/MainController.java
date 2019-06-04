@@ -275,11 +275,13 @@ public class MainController {
      * @param passwordToken
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(path = "admin/create")
+    @PostMapping(path = "admin/create/{passwordToken}")
     public @ResponseBody
-    void createAdmin(String passwordToken) {
+    int createAdmin(@PathVariable String passwordToken) {
         Admin a = new Admin();
         a.setPasswordToken(passwordToken);
+        adminRepository.save(a);
+        return a.getAdminId();
     }
 
     /**
