@@ -17,11 +17,23 @@
 
     <script>
         function load() {
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/review/byId/' + localStorage.getItem("rEdit"), false);
+            ajax.send();
+            json = JSON.parse(ajax.responseText);
+            document.getElementById("text").value = json.textString;
+            document.getElementById("number").value = json.rating;
 
         }
 
         function edit() {
+            var text = document.getElementById("text").value;
+            var rating = document.getElementById("number").value;
 
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/admin/editReview/'+ text + "/" + rating + "/" + localStorage.getItem("rEdit"), false);
+            ajax.send();
+            location.reload();
         }
 
         function delet() {
@@ -36,9 +48,11 @@
         <div class="col-sm" align="middle">
             <h1>Edit Review</h1>
             <br>
-            <textarea placeholder="Review Text" style="display: block"></textarea>
+            text
+            <textarea placeholder="Review Text" style="display: block; width: 40%" id="text"></textarea>
             <br>
-            <input type="number" placeholder="Review Number" style="display: block">
+            Rating
+            <input type="number" placeholder="Review Number" style="display: block; width: 40%" id="number">
             <br>
             <button style="margin: 20px" onclick="edit()">Submit Edit</button>
             <br>

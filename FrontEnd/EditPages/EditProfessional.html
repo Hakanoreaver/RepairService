@@ -18,42 +18,70 @@
     <script>
         function load() {
             var ajax = new XMLHttpRequest();
-            ajax.open('GET', 'http://localhost:9090/main/professional/find/' + localStorage.get("pEdit"), false);
+            ajax.open('GET', 'http://localhost:9090/main/professional/find/' + localStorage.getItem("pEdit"), false);
             ajax.send();
-            json = JSON.parse(ajax.responseText);
+            var json = JSON.parse(ajax.responseText);
+            document.getElementById("name").value = json.name;
+            document.getElementById("bt").value = json.bankToken;
+            document.getElementById("e").value = json.email;
+            document.getElementById("mn").value = json.mobileNumber;
+            document.getElementById("pt").value = json.passwordToken;
+            document.getElementById("abn").value = json.abn;
+            document.getElementById("cn").value = json.certificationNumber;
+            document.getElementById("pv").value = json.priceVariance;
         }
 
         function edit() {
+            var name = document.getElementById("name").value;
+            var bt = document.getElementById("bt").value;
+            var e = document.getElementById("e").value;
+            var mn = document.getElementById("mn").value;
+            var pt = document.getElementById("pt").value;
+            var abn = document.getElementById("abn").value;
+            var cn =  document.getElementById("cn").value;
+            var pv = document.getElementById("pv").value;
 
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/admin/editProfessional/' + name + "/" + bt + "/" + e + "/" + mn + "/" + pt + "/" + abn + "/" + cn + "/" + pv + "/" + localStorage.getItem("pEdit"), false);
+            ajax.send();
+            location.reload();
         }
 
         function delet() {
             var ajax = new XMLHttpRequest();
-            ajax.open('GET', 'http://localhost:9090/main/professional/delete/' + localStorage.get("pEdit"), false);
+            ajax.open('GET', 'http://localhost:9090/main/professional/delete/' + localStorage.getItem("pEdit"), false);
             ajax.send();
         }
     </script>
 </head>
-<body style="background-color: #add8e6">
+<body style="background-color: #add8e6" onload="load()">
 <div class="row">
     <div class="col-sm" align="middle" onload="load()">
         <h1>Edit Professional</h1>
         <br>
-        <input type="text" placeholder="Name" style="display: block">
+        Name
+        <input type="text" placeholder="Name" style="display: block" id="name">
         <br>
-        <input type="text" placeholder="Bank Token" style="display: block">
+        Bank Token
+        <input type="text" placeholder="Bank Token" style="display: block" id="bt">
         <br>
-        <input type="text" placeholder="Email" style="display: block">
+        Email
+        <input type="text" placeholder="Email" style="display: block" id="e">
         <br>
-        <input type="text" placeholder="Mobile Number" style="display: block">
+        Mobile Number
+        <input type="text" placeholder="Mobile Number" style="display: block" id="mn">
         <br>
-        <input type="text" placeholder="Password Token" style="display: block">
+        Password Token
+        <input type="text" placeholder="Password Token" style="display: block" id="pt">
         <br>
-        <input type="text" placeholder="ABN" style="display: block">
+        ABN
+        <input type="text" placeholder="ABN" style="display: block" id="abn">
         <br>
-        <input type="text" placeholder="Certification Number" style="display: block">
+        Certification Number
+        <input type="text" placeholder="Certification Number" style="display: block" id="cn">
         <br>
-        <input type="text" placeholder="Price Variance" style="display: block">
+        Price Variance
+        <input type="text" placeholder="Price Variance" style="display: block" id="pv">
         <br>
         <button style="margin: 20px" onclick="edit()">Submit Edit</button>
         <br>

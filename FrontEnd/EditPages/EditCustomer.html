@@ -31,7 +31,17 @@
         }
 
         function edit() {
-
+            var n = document.getElementById("name").value;
+            var cardT = document.getElementById("customerType").value;
+            var ct = document.getElementById("cardToken").value;
+            var sd = document.getElementById("subscriptionDate").value;
+            var e = document.getElementById("email").value;
+            var mn = document.getElementById("mobileNumber").value;
+            var pt = document.getElementById("passwordToken").value;
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/admin/editCustomer/' + n + "/" + cardT + "/" + ct + "/" + sd + "/" + e + "/" + mn + "/" + pt + "/" + localStorage.getItem("cEdit"), false);
+            ajax.send();
+            location.reload();
         }
 
         function delet() {

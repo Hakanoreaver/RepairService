@@ -75,9 +75,92 @@
                     issuesReport();
                     document.getElementById("button").style.visibility = "hidden";
                     break;
+                case "13" :
+                    reviewsAll();
+                    document.getElementById("button").style.visibility = "hidden";
+                    break;
                 default :
                     alert("Error");
 
+            }
+        }
+
+        function reviewsAll() {
+            clearTable();
+
+            var ajax = new XMLHttpRequest();
+            ajax.open('GET', 'http://localhost:9090/main/review/all', false);
+            ajax.send();
+            var json = JSON.parse(ajax.responseText);
+
+            var rows = document.getElementById("rows");
+            var head = document.getElementById("head");
+            var newHead = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            th1.scope = "row";
+            th1.innerHTML = "Review Id";
+
+            var th2 = document.createElement("th");
+            th2.scope = "row";
+            th2.innerHTML = "Customer Id";
+
+            var th3 = document.createElement("th");
+            th3.scope = "row";
+            th3.innerHTML = "Professional Id";
+
+            var th4 = document.createElement("th");
+            th4.scope = "row";
+            th4.innerHTML = "Text";
+
+            var th6 = document.createElement("th");
+            th6.scope = "row";
+            th6.innerHTML = "Rating";
+
+            var th5 = document.createElement("th");
+            th5.scope = "row";
+            th5.innerHTML = "Edit";
+
+            newHead.appendChild(th5);
+            newHead.appendChild(th1);
+            newHead.appendChild(th2);
+            newHead.appendChild(th3);
+            newHead.appendChild(th4);
+            newHead.appendChild(th6);
+
+            head.appendChild(newHead);
+
+            for (var i = 0; i < json.length; i++) {
+                var newRow = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = json[i].reviewId;
+                var td2 = document.createElement("td");
+                td2.innerHTML = json[i].customerId;
+                var td3 = document.createElement("td");
+                td3.innerHTML = json[i].professionalId;
+                var td4 = document.createElement("td");
+                td4.innerHTML = json[i].textString;
+                var td5 = document.createElement("td");
+                td5.innerHTML = json[i].rating;
+                var td8 = document.createElement("td");
+                var button = document.createElement("button");
+                button.innerHTML = "Edit";
+                button.id = json[i].reviewId;
+                button.onclick = function () {
+                    localStorage.setItem("rEdit", this.id);
+                    window.open("EditPages/EditReview.html", "_self");
+                }
+                td8.appendChild(button)
+
+                newRow.appendChild(td8);
+                newRow.appendChild(td1);
+                newRow.appendChild(td2);
+                newRow.appendChild(td3);
+                newRow.appendChild(td4);
+                newRow.appendChild(td5);
+
+
+                rows.appendChild(newRow);
             }
         }
 
@@ -153,9 +236,9 @@
                 var td8 = document.createElement("td");
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
-                var id = json[i].customerId;
+                button.id = json[i].customerId;
                 button.onclick = function () {
-                    localStorage.setItem("cEdit", id);
+                    localStorage.setItem("cEdit", this.id);
                     window.open("EditPages/EditCustomer.html", "_self");
                 }
                 td8.appendChild(button)
@@ -247,10 +330,9 @@
                 var td12 = document.createElement("td");
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
-                var id = json[i].professionalId;
-                var id = json[i].customerId;
+                button.id = json[i].professionalId;
                 button.onclick = function () {
-                    localStorage.setItem("pEdit", id);
+                    localStorage.setItem("pEdit", this.id);
                     window.open("EditPages/EditProfessional.html", "_self");
                 }
                 td12.appendChild(button)
@@ -322,9 +404,10 @@
                 var td8 = document.createElement("td");
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
-                var id = json[i].vehicleId;
+                button.id = json[i].vehicleId;
                 button.onclick = function () {
-                    edit(id);
+                    localStorage.setItem("vEdit", this.id);
+                    window.open("EditPages/EditVehicle.html", "_self");
                 }
                 td8.appendChild(button)
 
@@ -386,9 +469,9 @@
                 var td12 = document.createElement("td");
                 var button = document.createElement("button");
                 button.innerHTML = "Edit";
-                var id = json[i].customerId;
+                button.id = json[i].id;
                 button.onclick = function () {
-                    localStorage.setItem("sEdit", id);
+                    localStorage.setItem("sEdit", this.id);
                     window.open("EditPages/EditServices.html", "_self");
                 }
                 td12.appendChild(button);
@@ -460,11 +543,7 @@
             th11.scope = "row";
             th11.innerHTML = "Duration";
 
-            var th12 = document.createElement("th");
-            th12.scope = "row";
-            th12.innerHTML = "Edit";
 
-            newHead.appendChild(th12);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th10);
@@ -503,16 +582,8 @@
                 td10.innerHTML = json[i].customerId;
                 var td11 = document.createElement("td");
                 td11.innerHTML = json[i].duration;
-                var td12 = document.createElement("td");
-                var button = document.createElement("button");
-                button.innerHTML = "Edit";
-                var id = json[i].requestId;
-                button.onclick = function () {
-                    edit(id);
-                }
-                td12.appendChild(button)
 
-                newRow.appendChild(td12);
+
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td10);
@@ -561,11 +632,6 @@
             th5.scope = "row";
             th5.innerHTML = "Date";
 
-            var th6 = document.createElement("th");
-            th6.scope = "row";
-            th6.innerHTML = "Edit";
-
-            newHead.appendChild(th6);
             newHead.appendChild(th1);
             newHead.appendChild(th2);
             newHead.appendChild(th3);
@@ -586,16 +652,7 @@
                 td4.innerHTML = json[i].status;
                 var td5 = document.createElement("td");
                 td5.innerHTML = json[i].date;
-                var td12 = document.createElement("td");
-                var button = document.createElement("button");
-                button.innerHTML = "Edit";
-                var id = json[i].transactionalId;
-                button.onclick = function () {
-                    edit(id);
-                }
-                td12.appendChild(button)
 
-                newRow.appendChild(td12);
                 newRow.appendChild(td1);
                 newRow.appendChild(td2);
                 newRow.appendChild(td3);
@@ -1080,9 +1137,10 @@
                     var td8 = document.createElement("td");
                     var button = document.createElement("button");
                     button.innerHTML = "Edit";
-                    var id = json.customerId;
+                    button.id = json.customerId;
                     button.onclick = function () {
-                        edit(id);
+                        localStorage.setItem("cEdit", this.id);
+                        window.open("EditPages/EditCustomer.html", "_self");
                     }
                     td8.appendChild(button)
                     newRow.appendChild(td8);
@@ -1167,9 +1225,10 @@
                     var td12 = document.createElement("td");
                     var button = document.createElement("button");
                     button.innerHTML = "Edit";
-                    var id = json.professionalId;
+                    button.id = json.professionalId;
                     button.onclick = function () {
-                        edit(id);
+                        localStorage.setItem("pEdit", this.id);
+                        window.open("EditPages/EditProfessional.html", "_self");
                     }
                     td12.appendChild(button)
                     newRow.appendChild(td12);
@@ -1236,10 +1295,11 @@
                         var td8 = document.createElement("td");
                         var button = document.createElement("button");
                         button.innerHTML = "Edit";
-                        var id = json.vehicleId;
-                        button.onclick = function () {
-                            edit(id);
-                        }
+                    button.id = json.vehicleId;
+                    button.onclick = function () {
+                        localStorage.setItem("vEdit", this.id);
+                        window.open("EditPages/EditVehicle.html", "_self");
+                    }
                         td8.appendChild(button)
                         newRow.appendChild(td8);
                         newRow.appendChild(td1);
@@ -1295,9 +1355,10 @@
                         var td12 = document.createElement("td");
                         var button = document.createElement("button");
                         button.innerHTML = "Edit";
-                        var id = json.id;
+                        button.id = json.id;
                         button.onclick = function () {
-                            edit(id);
+                            localStorage.setItem("sEdit", this.id);
+                            window.open("EditPages/EditServices.html", "_self");
                         }
                         td12.appendChild(button)
                          newRow.appendChild(td12);
@@ -1523,6 +1584,7 @@
             <option value="3">Show All Vehicles</option>
             <option value="4">Show All Services</option>
             <option value="5">Show All Requests</option>
+            <option value="13">Show All Reviews</option>
             <option value="6">Show All Transactions</option>
             <option value="7">Show Balance</option>
             <option value="8">View Takings Report</option>

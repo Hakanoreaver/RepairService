@@ -424,11 +424,17 @@
                 rows.appendChild(newRow);
             }
         }
+
+        function edit() {
+		    localStorage.setItem("pEdit", localStorage.getItem("pid"));
+            window.open("EditPages/EditProfessional.html");
+		}
 	</script>
 
 </head>
 <body >
-	<div id="header" class="row" align="centre" style="height: 100px"> 
+	<div id="header" class="row" align="right" style="height: 70px">
+		<button onclick="edit()" style="border-radius: 20px;">editAccount</button>
 	</div>
 </div>
 <div id="header" class="row" align="centre" style="height: 100px"> 

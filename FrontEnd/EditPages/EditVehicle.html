@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Services</title>
+    <title>Edit Vehicle</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -18,27 +18,30 @@
     <script>
         function load() {
             var ajax = new XMLHttpRequest();
-            ajax.open('GET', 'http://localhost:9090/main/service/byId/' + localStorage.getItem("sEdit"), false);
+            ajax.open('GET', 'http://localhost:9090/main/vehicle/byId/' + localStorage.getItem("vEdit"), false);
             ajax.send();
             json = JSON.parse(ajax.responseText);
-            document.getElementById("serviceText").value = json.name;
-            document.getElementById("cost").value = json.cost;
+            document.getElementById("np").value = json.numberPlate;
+            document.getElementById("y").value = json.year;
+            document.getElementById("mm").value = json.makeModel;
 
         }
 
         function edit() {
-            var text = document.getElementById("serviceText").value;
-            var cost = document.getElementById("cost").value;
+            var np = document.getElementById("np").value;
+            var y = document.getElementById("y").value;
+            var mm = document.getElementById("mm").value;
 
             var ajax = new XMLHttpRequest();
-            ajax.open('GET', 'http://localhost:9090/main/admin/editService/' + text + "/" + cost + "/"  + localStorage.getItem("sEdit"), false);
+            ajax.open('GET', 'http://localhost:9090/main/admin/editVehicle/' + y + "/" + np + "/" + mm + "/" + localStorage.getItem("vEdit"), false);
             ajax.send();
             location.reload();
+
         }
 
         function delet() {
             var ajax = new XMLHttpRequest();
-            ajax.open('GET', 'http://localhost:9090/main/service/delete/' + localStorage.get("sEdit"), false);
+            ajax.open('GET', 'http://localhost:9090/main/vehicle/delete/' + localStorage.get("vEdit"), false);
             ajax.send();
         }
     </script>
@@ -46,13 +49,17 @@
 <body style="background-color: #add8e6" onload="load()">
 <div class="row">
     <div class="col-sm" align="middle">
-        <h1>Edit Services</h1>
+        <h1>Edit Review</h1>
         <br>
-        Service
-        <input type="text" placeholder="Service Text" style="display: block" id="serviceText"></input>
+        Number Plate
+        <input type="text" placeholder="Number Plate" style="display: block" id="np">
         <br>
-        Cost
-        <input placeholder="Cost" type="number" style="display: block" id="cost">
+        Year
+        <input type="text" placeholder="Year" style="display: block" id="y">
+        <br>
+        Make Model
+        <input type="text" placeholder="Make Model" style="display: block" id="mm">
+        <br>
         <button style="margin: 20px" onclick="edit()">Submit Edit</button>
         <br>
         <button style="margin: 20px" onclick="delet()">Delete</button>

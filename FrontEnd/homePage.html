@@ -306,7 +306,7 @@
                 button.id = json[i].professionalId;
                 button.innerHTML = "Hire";
                 button.onclick = function() {
-                    selectProfessional(button.id);
+                    selectProfessional(this.id);
 				};
                 td3.appendChild(button);
                 tr.appendChild(td3);

@@ -497,6 +497,17 @@ public class MainController {
     }
 
     /**
+     * This is an API to return all reviews
+     * @return
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "review/all")
+    public @ResponseBody
+    Iterable<Reviews> getReviews() {
+        return reviewRepository.findAll();
+    }
+
+    /**
      * This is an api to return all professionals
      * @return
      */
@@ -873,7 +884,7 @@ public class MainController {
     }
 
     /**
-     * This is an API to find a vehicle by id
+     * This is an API to find a service by id
      */
     @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "service/byId/{serviceId}")
@@ -881,6 +892,86 @@ public class MainController {
     Services serviceById(@PathVariable int serviceId) {
         return serviceRepository.findById(serviceId);
     }
+
+    /**
+     * This is an API to find a service by id
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "review/byId/{reviewId}")
+    public @ResponseBody
+    Reviews reviewById(@PathVariable int reviewId) {
+        return reviewRepository.find(reviewId);
+    }
+
+    /**
+     * This is an API for admin to edit customer
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/editCustomer/{name}/{customerType}/{cardToken}/{subscriptionDate}/{email}/{mobileNumber}/{passwordToken}/{customerId}")
+    public @ResponseBody
+    void adminEditCustomer(@PathVariable String name, @PathVariable boolean customerType, @PathVariable String cardToken, @PathVariable Date subscriptionDate, @PathVariable String email, @PathVariable String mobileNumber, @PathVariable String passwordToken, @PathVariable int customerId) {
+        customerRepository.updateName(name, customerId);
+        customerRepository.updateSubscription(customerType, customerId);
+        customerRepository.updateCardAuthToken(cardToken, customerId);
+        customerRepository.updateSubDate(subscriptionDate, customerId);
+        customerRepository.updateEmail(email, customerId);
+        customerRepository.updateMobileNumber(mobileNumber, customerId);
+        customerRepository.updatePassword(passwordToken, customerId);
+    }
+
+    /**
+     * This is an API for admin to edit professional
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/editProfessional/{name}/{bankToken}/{email}/{mobileNumber}/{passwordToken}/{ABN}/{certificationNumber}/{priceVariance}/{professionalId}")
+    public @ResponseBody
+    void adminEditProfessional(@PathVariable String name, @PathVariable String bankToken, @PathVariable String email, @PathVariable String mobileNumber, @PathVariable String passwordToken, @PathVariable String ABN, @PathVariable String certificationNumber, @PathVariable double priceVariance, @PathVariable int professionalId) {
+        professionalRepository.updateName(name, professionalId);
+        professionalRepository.updateBankToken(bankToken, professionalId);
+        professionalRepository.updateEmail(email, professionalId);
+        professionalRepository.updateMobile(mobileNumber, professionalId);
+        professionalRepository.updatePassword(passwordToken, professionalId);
+        professionalRepository.updateABN(ABN, professionalId);
+        professionalRepository.updateCertification(certificationNumber, professionalId);
+        professionalRepository.updatePrice(priceVariance, professionalId);
+    }
+
+    /**
+     * This is an API for admin to edit review
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/editReview/{textString}/{rating}/{reviewId}")
+    public @ResponseBody
+    void adminEditReview(@PathVariable String textString, @PathVariable double rating, @PathVariable int reviewId) {
+        reviewRepository.updateText(textString, reviewId);
+        reviewRepository.updateRating(rating, reviewId);
+    }
+
+    /**
+     * This is an API for admin to edit vehicle
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/editVehicle/{year}/{numberPlate}/{makeModel}/{vehicleId}")
+    public @ResponseBody
+    void adminEditVehicle(@PathVariable int year, @PathVariable String numberPlate, @PathVariable String makeModel, @PathVariable int vehicleId) {
+        vehicleRepository.updateYear(year, vehicleId);
+        vehicleRepository.updateNumberPlate(numberPlate, vehicleId);
+        vehicleRepository.updateMakeModel(makeModel, vehicleId);
+    }
+
+    /**
+     * This is an API for admin to edit service
+     */
+    @CrossOrigin(origins = "http://127.0.0.1:7080", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "admin/editService/{text}/{cost}/{serviceId}")
+    public @ResponseBody
+    void adminEditService(@PathVariable String text, @PathVariable double cost, @PathVariable int serviceId) {
+        serviceRepository.updateName(text, serviceId);
+        serviceRepository.updateCost(cost, serviceId);
+    }
+
+
+
 
 
 

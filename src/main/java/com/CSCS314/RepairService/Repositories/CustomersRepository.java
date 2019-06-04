@@ -53,4 +53,9 @@ public interface CustomersRepository extends CrudRepository<Customers, Integer> 
         @Transactional
         @Query("UPDATE Customers c SET SubscriptionDate = :subDate WHERE c.customerId = :customerId")
         public void updateSubDate(@Param("subDate") Date subDate, @Param("customerId") Integer customerId);
+
+        @Modifying
+        @Transactional
+        @Query("UPDATE Customers c SET email = :email WHERE c.customerId = :customerId")
+        public void updateEmail(@Param("email") String email, @Param("customerId") Integer customerId);
 }
