@@ -618,6 +618,13 @@
             rows.appendChild(newRow);
         }
 	}
+
+	function editVehicle() {
+        e = document.getElementById("cars");
+        var carId = e.options[e.selectedIndex].value;
+        localStorage.setItem("vEdit", carId);
+        window.open("EditPages/EditVehicle.html");
+	}
 </script>
 </head>
 
@@ -650,6 +657,7 @@
 			<div style="height: 80px"></div>
 			<button class="myButton" name="firstColumn" onclick="lodgeRequest()">Place Request</button>
 			<button class="myButton" name="firstColumn" onclick="removeVehicle()">Remove Vehicle</button>
+			<button class="myButton" name="firstColumn" onclick="editVehicle()">Edit Vehicle</button>
 		</div>
 		<div id="professionalDiv" class="col-sm-4" style="background-color: #ea00f7; visibility: hidden">
 			<h3 align="middle"> Select Professional </h3>
